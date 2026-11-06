@@ -14,7 +14,7 @@ import { ARCHITECTURES } from './simulator/isa.js'
 import { hex } from './simulator/memory.js'
 
 const architecture = ref('mips')
-const selectedExample = ref('factorial')
+const selectedExample = ref('gcd')
 const source = ref(EXAMPLES.mips[0].code)
 const input = ref(EXAMPLES.mips[0].input)
 const simulator = ref(new Simulator('mips'))
@@ -207,7 +207,7 @@ function changeArchitecture(id) {
   running.value = false
   architecture.value = id
   simulator.value = new Simulator(id)
-  selectedExample.value = 'factorial'
+  selectedExample.value = 'gcd'
   source.value = EXAMPLES[id][0].code
   input.value = EXAMPLES[id][0].input
   breakpoints.value = new Set()
@@ -273,11 +273,11 @@ function handleKeyboard(event) {
 watch(input, (value) => {
   if (simulator.value.program && !running.value) simulator.value.setInput(value)
 })
-watch(source, (value) => localStorage.setItem(`fcc-asm-${architecture.value}`, value))
+watch(source, (value) => localStorage.setItem(`fcc-asm-v2-${architecture.value}`, value))
 
 onMounted(() => {
   try {
-    const saved = localStorage.getItem('fcc-asm-mips')
+    const saved = localStorage.getItem('fcc-asm-v2-mips')
     if (saved) source.value = saved
   } catch {}
   loadProgram()

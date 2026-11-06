@@ -1,6 +1,70 @@
 export const EXAMPLES = {
   mips: [
     {
+      id: 'gcd',
+      name: '欧几里得算法',
+      description: '辗转相除法、循环与取余',
+      input: '1071 462\n',
+      code: `# FCC / SPIM 欧几里得算法示例
+        .data
+prompt_a: .asciiz "a = "
+prompt_b: .asciiz "b = "
+result:   .asciiz "gcd = "
+nl:       .asciiz "\\n"
+
+        .text
+        .globl main
+getint:
+        li    $v0, 5
+        syscall
+        jr    $ra
+putint:
+        li    $v0, 1
+        syscall
+        jr    $ra
+putstr:
+        li    $v0, 4
+        syscall
+        jr    $ra
+
+# gcd(a, b)：当 b 不为 0 时，反复执行 (a, b) = (b, a % b)
+gcd:
+        move  $t0, $a0
+        move  $t1, $a1
+gcd_loop:
+        beqz  $t1, gcd_done
+        div   $t0, $t1
+        mfhi  $t2
+        move  $t0, $t1
+        move  $t1, $t2
+        j     gcd_loop
+gcd_done:
+        move  $v0, $t0
+        jr    $ra
+
+main:
+        la    $a0, prompt_a
+        jal   putstr
+        jal   getint
+        move  $s0, $v0
+        la    $a0, prompt_b
+        jal   putstr
+        jal   getint
+        move  $s1, $v0
+        move  $a0, $s0
+        move  $a1, $s1
+        jal   gcd
+        move  $s0, $v0
+        la    $a0, result
+        jal   putstr
+        move  $a0, $s0
+        jal   putint
+        la    $a0, nl
+        jal   putstr
+        li    $v0, 10
+        syscall`,
+    },
+    {
       id: 'factorial',
       name: '递归阶乘',
       description: '函数调用、递归与标准 I/O',
@@ -97,6 +161,65 @@ done:
     },
   ],
   riscv: [
+    {
+      id: 'gcd',
+      name: '欧几里得算法',
+      description: '辗转相除法、循环与取余',
+      input: '1071 462\n',
+      code: `# FCC / RISC-V 欧几里得算法示例
+    .option norelax
+    .text
+    .globl main
+main:
+    addi  sp, sp, -16
+    sw    ra, 12(sp)
+    sw    s0, 8(sp)
+    sw    s1, 4(sp)
+    la    a0, prompt_a
+    call  putstr
+    call  getint
+    mv    s0, a0
+    la    a0, prompt_b
+    call  putstr
+    call  getint
+    mv    s1, a0
+    mv    a0, s0
+    mv    a1, s1
+    call  gcd
+    mv    s0, a0
+    la    a0, result
+    call  putstr
+    mv    a0, s0
+    call  putint
+    la    a0, nl
+    call  putstr
+    li    a0, 0
+    lw    ra, 12(sp)
+    lw    s0, 8(sp)
+    lw    s1, 4(sp)
+    addi  sp, sp, 16
+    ret
+
+# gcd(a, b)：当 b 不为 0 时，反复执行 (a, b) = (b, a % b)
+gcd:
+    mv    t0, a0
+    mv    t1, a1
+gcd_loop:
+    beqz  t1, gcd_done
+    rem   t2, t0, t1
+    mv    t0, t1
+    mv    t1, t2
+    j     gcd_loop
+gcd_done:
+    mv    a0, t0
+    ret
+
+    .data
+prompt_a: .asciz "a = "
+prompt_b: .asciz "b = "
+result:   .asciz "gcd = "
+nl:       .asciz "\\n"`,
+    },
     {
       id: 'factorial',
       name: '递归阶乘',
