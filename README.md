@@ -1,0 +1,119 @@
+# FCC ASM Lab
+
+面向 FCC 编译原理课程设计的浏览器汇编调试器，支持 **SPIM / MIPS32** 与 **RISC-V / RV32IM**。学生可以直接粘贴 FCC 编译器生成的汇编，在浏览器中执行、设置断点并观察寄存器和内存，无需安装 SPIM、QEMU 或交叉工具链。
+
+基于 Vue 3 + Vite，所有汇编解析和指令执行均在浏览器本地完成，不需要后端服务。
+
+## 快速开始
+
+环境要求：Node.js 22.12 或更高版本。
+
+```bash
+npm install
+npm run dev
+```
+
+打开终端中 Vite 显示的地址。生产构建与预览：
+
+```bash
+npm run build
+npm run preview
+```
+
+## 功能
+
+- 可编辑汇编代码、语法高亮、文件导入与导出。
+- 点击行号设置断点，支持运行、继续、暂停、单步、步过和重置。
+- 寄存器支持 HEX / DEC / UINT / BIN 显示，可直接编辑寄存器值。
+- 堆栈、堆和数据段视图，支持 SP / FP 定位及任意地址跳转。
+- 小端字节、32 位字值、ASCII 和内存修改高亮。
+- 标准输入、标准输出、退出码和动态指令数显示。
+- 内置两种架构的递归阶乘、数组求和示例。
+- 自动保存当前架构的代码到浏览器 localStorage。
+
+## 使用方法
+
+1. 在顶部选择 **SPIM** 或 **RISC-V**。
+2. 选择示例、打开本地 `.s` 文件，或直接粘贴汇编代码。
+3. 在“标准输入”页签填写程序输入。
+4. 按 `F5` 运行；需要调试时，先点击指令所在行号设置断点。
+5. 在右侧观察寄存器、堆栈和数据段。修改代码后，下次运行会自动重新汇编。
+
+程序必须包含 `main:` 或 `_start:` 标签。同时存在时从 `_start` 开始执行。RISC-V 的 `main` 可以通过 `ret` 返回到地址 0 结束，也可以执行 `exit` 系统调用；SPIM 程序通常使用 `syscall 10` 结束。
+
+### 快捷键
+
+| 按键 | 功能 |
+| --- | --- |
+| `F5` | 运行 / 继续 / 暂停 |
+| `F9` | 单步执行 |
+| `F10` | 步过函数调用 |
+| `Tab` | 在编辑器中插入 4 个空格 |
+| `Esc` | 关闭使用指南 |
+
+## 系统调用
+
+### SPIM
+
+| 服务 | `$v0` | 说明 |
+| --- | ---: | --- |
+| print_int | 1 | 输出 `$a0` 的有符号十进制值 |
+| print_string | 4 | 输出 `$a0` 指向的 NUL 结尾字符串 |
+| read_int | 5 | 读取带符号十进制整数到 `$v0` |
+| read_string | 8 | 读取字符串，保留换行并补 `\0` |
+| sbrk | 9 | 调整堆指针并返回原堆指针 |
+| exit | 10 | 正常退出 |
+| print_char | 11 | 输出 `$a0` 低 8 位字符 |
+| read_char | 12 | 读取一个字符，EOF 返回 -1 |
+| exit2 | 17 | 以 `$a0` 为退出码结束 |
+
+### RISC-V
+
+| 服务 | `a7` | 说明 |
+| --- | ---: | --- |
+| read | 63 | 从 stdin 读取到 `a1` 指向的缓冲区 |
+| write | 64 | 将 `a1` 指向的缓冲区写到 stdout / stderr |
+| exit / exit_group | 93 / 94 | 以 `a0` 为退出码结束 |
+| sbrk | 214 | 调整堆指针并返回原堆指针 |
+
+当汇编没有定义 `getchar`、`getint`、`getstr`、`putchar`、`putint`、`putstr` 时，RISC-V 的 `call` 会直接调用对应的内置 FCC 运行时实现。如果程序已经定义这些标签，则执行程序自身的汇编实现，因此也可以直接调试 FCC 的 `runtime/riscv32/io.s`。
+
+堆分配相关的 `malloc/free` 与 `__malloc_*`、`__free_*` 也提供内置后备实现。
+
+## 汇编支持范围
+
+支持 FCC 后端及参考汇编使用的指令和常用伪指令，包括：
+
+- `.text`、`.data`、`.bss`、`.rodata`、`.word`、`.half`、`.byte`。
+- `.ascii`、`.asciiz`、`.asciz`、`.string`、`.space`、`.align`、`.set`、`.eqv`。
+- 32 位算术、逻辑、移位、比较、乘除、分支、跳转、字节/半字/字访存。
+- MIPS 的 `hi/lo`、SPIM `syscall`，以及 RISC-V 的 Linux `ecall`。
+
+这是面向 FCC 整数后端的教学模拟器，不实现浮点、完整 Linux 文件系统、动态链接或真实 ELF 装载。MIPS 分支不模拟延迟槽，与 SPIM 默认执行模式一致。界面连续执行设有 1000 万条指令保护上限，达到上限后可检查状态并继续。
+
+## 项目结构
+
+```text
+src/
+├── App.vue                     # 调试操作与全局状态
+├── components/
+│   ├── EditorPanel.vue         # 编辑器、行号与断点
+│   ├── RegisterPanel.vue       # 寄存器及进制转换
+│   ├── MemoryPanel.vue         # 堆栈、堆和数据段
+│   └── ConsolePanel.vue        # stdin / stdout
+├── simulator/
+│   ├── index.js                # 指令解释、系统调用与调试执行
+│   ├── parser.js               # 两阶段汇编解析和符号解析
+│   ├── memory.js               # 稀疏分页小端内存
+│   └── isa.js                  # 架构、寄存器与数值格式定义
+├── examples.js                 # 内置示例
+└── style.css                   # 界面样式
+```
+
+## 验证
+
+```bash
+npm run build
+```
+
+执行引擎已使用 `../fcc/tests/ref_asm/` 中全部 7 个 MIPS32 和 7 个 RISC-V32 程序，与 `../fcc/tests/data/` 的输入及期望输出逐一比对通过；同时验证了 FCC 原始 RISC-V `start.s/io.s`、六个统一 I/O 函数、断点继续、浏览器内编辑和重置重跑。
