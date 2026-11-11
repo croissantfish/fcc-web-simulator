@@ -47,6 +47,14 @@ export class Simulator {
     this.inputOffset = 0
   }
 
+  appendInput(input) {
+    const bytes = encoder.encode(input)
+    const next = new Uint8Array(this.inputBytes.length + bytes.length)
+    next.set(this.inputBytes)
+    next.set(bytes, this.inputBytes.length)
+    this.inputBytes = next
+  }
+
   index(register) {
     return registerIndex(this.architecture, register)
   }
@@ -88,7 +96,14 @@ export class Simulator {
   }
 
   readByte() {
-    if (this.inputOffset >= this.inputBytes.length) return -1
+    if (this.inputOffset >= this.inputBytes.length) {
+      if (this.interactive) {
+        const error = new Error('等待标准输入')
+        error.name = 'InputRequired'
+        throw error
+      }
+      return -1
+    }
     return this.inputBytes[this.inputOffset++]
   }
 
@@ -204,8 +219,11 @@ export class Simulator {
         }
         const count = Math.max(0, this.getRegister('a2') | 0)
         const address = this.getRegister('a1')
+        const available = this.inputBytes.length - this.inputOffset
+        if (this.interactive && count > 0 && available === 0) this.readByte()
+        const readCount = this.interactive ? Math.min(count, available) : count
         let read = 0
-        while (read < count) {
+        while (read < readCount) {
           const byte = this.readByte()
           if (byte < 0) break
           this.memory.write8(address + read, byte)
@@ -518,6 +536,10 @@ export class Simulator {
       if (this.status !== 'finished') this.status = 'paused'
       return { reason: this.status === 'finished' ? 'finished' : 'paused', steps: 1, instruction }
     } catch (error) {
+      if (error.name === 'InputRequired') {
+        this.status = 'waiting'
+        return { reason: 'input', steps: 0, instruction }
+      }
       const wrapped = new Error(`第 ${instruction.line} 行 · ${hex(instruction.pc)}：${error.message}`)
       this.status = 'error'
       this.error = wrapped.message
@@ -536,9 +558,13 @@ export class Simulator {
         return { reason: 'breakpoint', steps: executed }
       }
       const result = this.step()
-      this.status = 'running'
       executed += result.steps
       first = false
+      if (result.reason === 'input') {
+        this.status = 'waiting'
+        return { reason: 'input', steps: executed }
+      }
+      this.status = 'running'
       if (result.reason === 'finished') {
         this.status = 'finished'
         return { reason: 'finished', steps: executed }
@@ -572,16 +598,15 @@ export class Simulator {
     else this.setRegister(index, value)
   }
 
-  getMemoryWords(start, count) {
+  getMemoryRows(start, count) {
     return Array.from({ length: count }, (_, index) => {
-      const address = u32(start + index * 4)
-      const bytes = this.memory.readBytes(address, 4)
+      const address = u32(start + index * 16)
+      const bytes = this.memory.readBytes(address, 16)
       return {
         address,
-        value: this.memory.read32(address),
         bytes,
         ascii: String.fromCharCode(...bytes).replace(/[\x00-\x1f\x7f-\xff]/g, '·'),
-        dirty: [...Array(4)].some((_, offset) => this.memory.dirty.has(u32(address + offset))),
+        dirty: Array.from({ length: 16 }, (_, offset) => this.memory.dirty.has(u32(address + offset))),
       }
     })
   }

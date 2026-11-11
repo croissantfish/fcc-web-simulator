@@ -1,8 +1,8 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import {
-  Braces, ChevronRight, CircleHelp, Cpu, Download, FileCode2, FilePlus2, FolderOpen, Pause,
-  Play, RotateCcw, StepForward, X, Zap,
+  Braces, ChevronRight, CircleHelp, Cpu, Download, FileCode2, FilePlus2, FolderOpen, Monitor,
+  Moon, Pause, Play, RotateCcw, StepForward, Sun, X, Zap,
 } from '@lucide/vue'
 import EditorPanel from './components/EditorPanel.vue'
 import RegisterPanel from './components/RegisterPanel.vue'
@@ -14,7 +14,7 @@ import { ARCHITECTURES } from './simulator/isa.js'
 import { hex } from './simulator/memory.js'
 
 const architecture = ref('mips')
-const selectedExample = ref('gcd')
+const selectedExample = ref('hello')
 const source = ref(EXAMPLES.mips[0].code)
 const input = ref(EXAMPLES.mips[0].input)
 const simulator = ref(new Simulator('mips'))
@@ -24,6 +24,7 @@ const sourceDirty = ref(true)
 const running = ref(false)
 const stopRequested = ref(false)
 const breakpoints = ref(new Set())
+const consoleView = ref('merged')
 const radix = ref('16')
 const error = ref('')
 const errorLine = ref(0)
@@ -31,6 +32,11 @@ const fileInput = ref(null)
 const helpOpen = ref(false)
 const examplePickerOpen = ref(false)
 const notice = ref('编辑代码后点击运行，或按 F9 单步执行')
+const themeMode = ref('system')
+const resolvedTheme = ref('dark')
+let themeMedia = null
+let inputResumeMode = 'run'
+let inputResumeBreakpoints = new Set()
 let executionId = 0
 
 const config = computed(() => ARCHITECTURES[architecture.value])
@@ -48,7 +54,7 @@ const breakpointAddresses = computed(() => new Set(
   [...breakpoints.value].map((line) => simulator.value.program?.lineMap.get(line)).filter((pc) => pc !== undefined),
 ))
 const statusLabel = computed(() => ({
-  edited: '代码已修改', ready: '就绪', running: '正在执行', paused: '已暂停',
+  edited: '代码已修改', ready: '就绪', running: '正在执行', paused: '已暂停', waiting: '等待输入',
   finished: '执行完成', error: '执行错误', empty: '未装载',
 }[status.value] || status.value))
 const activeExample = computed(() => examples.value.find((example) => example.id === selectedExample.value))
@@ -65,10 +71,13 @@ function loadProgram() {
   executionId += 1
   running.value = false
   stopRequested.value = false
+  inputResumeMode = 'run'
+  inputResumeBreakpoints = new Set()
   error.value = ''
   errorLine.value = 0
   try {
-    simulator.value.load(source.value, input.value)
+    simulator.value.load(source.value, consoleView.value === 'merged' ? '' : input.value)
+    simulator.value.interactive = consoleView.value === 'merged'
     sourceDirty.value = false
     status.value = 'ready'
     notice.value = `已从 ${simulator.value.program.entryName} 装载 ${simulator.value.program.instructions.length} 条指令`
@@ -87,6 +96,11 @@ function ensureProgram() {
   return true
 }
 
+function prepareExecutionInput(active) {
+  active.interactive = consoleView.value === 'merged'
+  if (active.steps === 0 && active.status !== 'waiting') active.setInput(active.interactive ? '' : input.value)
+}
+
 function refresh() {
   status.value = simulator.value.status
   revision.value += 1
@@ -95,6 +109,7 @@ function refresh() {
 async function runExecution(extraBreakpoints = new Set()) {
   if (running.value || !ensureProgram()) return
   const active = simulator.value
+  prepareExecutionInput(active)
   const id = ++executionId
   const allBreakpoints = new Set([...breakpointAddresses.value, ...extraBreakpoints])
   const continueFromBreakpoint = status.value === 'paused' && allBreakpoints.has(active.pc)
@@ -113,6 +128,12 @@ async function runExecution(extraBreakpoints = new Set()) {
       total += result.steps
       firstBatch = false
       revision.value += 1
+      if (result.reason === 'input') {
+        inputResumeMode = 'run'
+        inputResumeBreakpoints = new Set(extraBreakpoints)
+        notice.value = '程序等待标准输入，请在终端中输入一行并回车'
+        break
+      }
       if (result.reason === 'breakpoint') {
         notice.value = `命中断点 · 第 ${active.program.instructionMap.get(active.pc)?.line ?? '—'} 行`
         break
@@ -143,13 +164,21 @@ async function runExecution(extraBreakpoints = new Set()) {
   }
 }
 
-function stepOnce() {
-  if (running.value || !ensureProgram()) return
+function stepOnce(resumeInput = false) {
+  if (running.value || (status.value === 'waiting' && !resumeInput) || !ensureProgram()) return
+  const active = simulator.value
+  prepareExecutionInput(active)
   try {
-    const result = simulator.value.step()
+    const result = active.step()
+    if (result.reason === 'input') {
+      inputResumeMode = 'step'
+      inputResumeBreakpoints = new Set()
+    }
     notice.value = result.reason === 'finished'
       ? '程序已结束'
-      : `单步执行 · ${currentInstruction.value?.raw || ''}`
+      : result.reason === 'input'
+        ? '程序等待标准输入，请在终端中输入一行并回车'
+        : `单步执行 · ${currentInstruction.value?.raw || ''}`
     refresh()
   } catch (exception) {
     recordError(exception)
@@ -158,7 +187,7 @@ function stepOnce() {
 }
 
 function stepOver() {
-  if (!ensureProgram()) return
+  if (running.value || status.value === 'waiting' || !ensureProgram()) return
   if (simulator.value.isCall()) runExecution(new Set([(simulator.value.pc + 4) >>> 0]))
   else stepOnce()
 }
@@ -169,6 +198,7 @@ function resetProgram() {
 }
 
 function toggleRun() {
+  if (status.value === 'waiting') return
   if (running.value) stopRequested.value = true
   else runExecution()
 }
@@ -212,7 +242,7 @@ function changeArchitecture(id) {
   running.value = false
   architecture.value = id
   simulator.value = new Simulator(id)
-  selectedExample.value = 'gcd'
+  selectedExample.value = 'hello'
   source.value = EXAMPLES[id][0].code
   input.value = EXAMPLES[id][0].input
   breakpoints.value = new Set()
@@ -256,6 +286,16 @@ function editRegister(index, value) {
   }
 }
 
+function submitInput(text) {
+  const active = simulator.value
+  if (consoleView.value !== 'merged' || active.status !== 'waiting') return
+  active.appendInput(`${text}\n`)
+  active.appendText(`${text}\n`)
+  revision.value += 1
+  if (inputResumeMode === 'step') stepOnce(true)
+  else runExecution(inputResumeBreakpoints)
+}
+
 function clearOutput() {
   simulator.value.output = ''
   revision.value += 1
@@ -279,19 +319,59 @@ function handleKeyboard(event) {
 }
 
 watch(input, (value) => {
-  if (simulator.value.program && !running.value) simulator.value.setInput(value)
+  if (consoleView.value === 'split' && simulator.value.program && !running.value && status.value !== 'waiting') {
+    simulator.value.setInput(value)
+  }
+})
+watch(consoleView, (value) => {
+  if (!simulator.value.program || running.value || status.value === 'waiting') return
+  simulator.value.interactive = value === 'merged'
+  if (simulator.value.steps === 0) simulator.value.setInput(value === 'merged' ? '' : input.value)
 })
 watch(source, (value) => localStorage.setItem(`fcc-asm-v2-${architecture.value}`, value))
 
+function applyTheme() {
+  const theme = themeMode.value === 'system' ? (themeMedia?.matches ? 'dark' : 'light') : themeMode.value
+  resolvedTheme.value = theme
+  document.documentElement.dataset.theme = theme
+  document.documentElement.style.colorScheme = theme
+}
+
+function setThemeMode(mode) {
+  themeMode.value = mode
+  try { localStorage.setItem('fcc-asm-theme', mode) } catch {}
+  applyTheme()
+}
+
+function toggleTheme() {
+  setThemeMode(resolvedTheme.value === 'dark' ? 'light' : 'dark')
+}
+
+function toggleSystemTheme() {
+  setThemeMode(themeMode.value === 'system' ? resolvedTheme.value : 'system')
+}
+
+function handleSystemThemeChange() {
+  if (themeMode.value === 'system') applyTheme()
+}
+
 onMounted(() => {
+  themeMedia = window.matchMedia('(prefers-color-scheme: dark)')
   try {
     const saved = localStorage.getItem('fcc-asm-v2-mips')
+    const savedTheme = localStorage.getItem('fcc-asm-theme')
     if (saved) source.value = saved
+    if (['system', 'light', 'dark'].includes(savedTheme)) themeMode.value = savedTheme
   } catch {}
+  applyTheme()
+  themeMedia.addEventListener('change', handleSystemThemeChange)
   loadProgram()
   window.addEventListener('keydown', handleKeyboard)
 })
-onBeforeUnmount(() => window.removeEventListener('keydown', handleKeyboard))
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', handleKeyboard)
+  themeMedia?.removeEventListener('change', handleSystemThemeChange)
+})
 </script>
 
 <template>
@@ -307,6 +387,20 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKeyboard))
         <button class="button ghost" @click="examplePickerOpen = true"><FilePlus2 :size="15" />导入样例</button>
         <button class="button ghost" @click="openFile"><FolderOpen :size="15" />打开</button>
         <button class="button ghost" @click="downloadFile"><Download :size="15" />导出</button>
+        <div class="theme-controls">
+          <button class="button ghost theme-toggle" :title="resolvedTheme === 'dark' ? '切换到浅色模式' : '切换到深色模式'" @click="toggleTheme">
+            <Sun v-if="resolvedTheme === 'dark'" :size="15" />
+            <Moon v-else :size="15" />
+            <span>{{ resolvedTheme === 'dark' ? '浅色' : '深色' }}</span>
+          </button>
+          <button
+            class="icon-button subtle system-theme"
+            :class="{ active: themeMode === 'system' }"
+            :aria-pressed="themeMode === 'system'"
+            :title="themeMode === 'system' ? '正在跟随系统配色，点击取消' : '跟随系统配色'"
+            @click="toggleSystemTheme"
+          ><Monitor :size="15" /></button>
+        </div>
         <button class="icon-button help-button" title="使用指南" @click="helpOpen = true"><CircleHelp :size="18" /></button>
         <input ref="fileInput" type="file" accept=".s,.asm,.S" hidden @change="readFile">
       </div>
@@ -323,14 +417,14 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKeyboard))
       </div>
       <span class="toolbar-divider" />
       <div class="execution-controls">
-        <button class="button primary run-button" @click="toggleRun">
+        <button class="button primary run-button" :disabled="status === 'waiting'" @click="toggleRun">
           <Pause v-if="running" :size="15" fill="currentColor" />
           <Play v-else :size="15" fill="currentColor" />
-          {{ running ? '暂停' : status === 'finished' ? '重新运行' : status === 'paused' ? '继续' : '运行' }}
+          {{ running ? '暂停' : status === 'waiting' ? '等待输入' : status === 'finished' ? '重新运行' : status === 'paused' ? '继续' : '运行' }}
           <kbd>F5</kbd>
         </button>
-        <button class="button tool-button" :disabled="running" title="单步执行 (F9)" @click="stepOnce"><StepForward :size="16" /><span>单步</span><kbd>F9</kbd></button>
-        <button class="button tool-button" :disabled="running" title="步过函数调用 (F10)" @click="stepOver"><ChevronRight :size="17" /><span>步过</span><kbd>F10</kbd></button>
+        <button class="button tool-button" :disabled="running || status === 'waiting'" title="单步执行 (F9)" @click="stepOnce"><StepForward :size="16" /><span>单步</span><kbd>F9</kbd></button>
+        <button class="button tool-button" :disabled="running || status === 'waiting'" title="步过函数调用 (F10)" @click="stepOver"><ChevronRight :size="17" /><span>步过</span><kbd>F10</kbd></button>
         <button class="icon-button reset-button" :disabled="running" title="重置执行" @click="resetProgram"><RotateCcw :size="16" /></button>
       </div>
       <div class="toolbar-state">
@@ -347,24 +441,24 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKeyboard))
         :breakpoints="breakpoints"
         :current-line="currentLine"
         :error-line="errorLine"
-        :running="running"
+        :running="running || status === 'waiting'"
         :examples="examples"
         :selected-example="selectedExample"
         @update:source="onSourceChange"
         @toggle-breakpoint="toggleBreakpoint"
         @select-example="selectExample"
       />
-      <aside class="inspector">
-        <RegisterPanel v-model:radix="radix" :registers="registers" @edit="editRegister" />
-        <MemoryPanel :simulator="simulator" :revision="revision" :radix="radix" />
-      </aside>
+      <RegisterPanel v-model:radix="radix" :registers="registers" :current-line="currentLine" :architecture="architecture" @edit="editRegister" />
+      <MemoryPanel :simulator="simulator" :revision="revision" />
       <ConsolePanel
+        v-model:view="consoleView"
         :output="simulator.output"
         :input="input"
         :status="status"
         :steps="simulator.steps || 0"
         :exit-code="simulator.exitCode"
         @update:input="input = $event"
+        @submit="submitInput"
         @clear="clearOutput"
       />
     </main>

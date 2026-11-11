@@ -81,6 +81,7 @@ watch(() => props.currentLine, async (line) => {
           @click="emit('toggle-breakpoint', index + 1)"
         >
           <span class="breakpoint-dot" />
+          <span v-if="currentLine === index + 1" class="pc-line-marker">PC</span>
           <span>{{ index + 1 }}</span>
         </button>
       </div>

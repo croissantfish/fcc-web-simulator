@@ -3,6 +3,23 @@ import { FCC_EXAMPLES } from './examples/fcc/index.js'
 export const EXAMPLES = {
   mips: [
     {
+      id: 'hello',
+      name: 'Hello World',
+      description: '最小程序、字符串输出与退出',
+      input: '',
+      code: `.data
+message: .asciiz "Hello, world!\\n"
+
+    .text
+    .globl main
+main:
+    li    $v0, 4
+    la    $a0, message
+    syscall
+    li    $v0, 10
+    syscall`,
+    },
+    {
       id: 'gcd',
       name: '欧几里得算法',
       description: '辗转相除法、循环与取余',
@@ -164,6 +181,27 @@ done:
     ...FCC_EXAMPLES.mips,
   ],
   riscv: [
+    {
+      id: 'hello',
+      name: 'Hello World',
+      description: '最小程序、字符串输出与退出',
+      input: '',
+      code: `.option norelax
+    .data
+message: .asciz "Hello, world!\\n"
+
+    .text
+    .globl main
+main:
+    li    a0, 1
+    la    a1, message
+    li    a2, 14
+    li    a7, 64
+    ecall
+    li    a0, 0
+    li    a7, 93
+    ecall`,
+    },
     {
       id: 'gcd',
       name: '欧几里得算法',
