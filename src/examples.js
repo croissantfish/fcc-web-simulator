@@ -1,3 +1,5 @@
+import { FCC_EXAMPLES } from './examples/fcc/index.js'
+
 export const EXAMPLES = {
   mips: [
     {
@@ -159,6 +161,7 @@ done:
     li    $v0, 10
     syscall`,
     },
+    ...FCC_EXAMPLES.mips,
   ],
   riscv: [
     {
@@ -304,5 +307,6 @@ done:
     li    a7, 93
     ecall`,
     },
+    ...FCC_EXAMPLES.riscv,
   ],
 }

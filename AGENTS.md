@@ -34,7 +34,8 @@ src/
 │   ├── parser.js               # 段、标签、数据初始化与指令解析
 │   ├── memory.js               # 稀疏分页内存、小端读写与数值工具
 │   └── isa.js                  # 架构配置、寄存器名和显示格式
-├── examples.js                 # 内置教学示例
+├── examples.js                 # 内置教学示例汇总
+├── examples/fcc/               # FCC 编译器生成的双架构汇编及样例元数据
 ├── highlight.js                # 汇编语法高亮
 └── style.css                   # 全局界面样式
 ```

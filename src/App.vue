@@ -1,7 +1,7 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import {
-  Braces, ChevronRight, CircleHelp, Cpu, Download, FolderOpen, Pause,
+  Braces, ChevronRight, CircleHelp, Cpu, Download, FileCode2, FilePlus2, FolderOpen, Pause,
   Play, RotateCcw, StepForward, X, Zap,
 } from '@lucide/vue'
 import EditorPanel from './components/EditorPanel.vue'
@@ -29,6 +29,7 @@ const error = ref('')
 const errorLine = ref(0)
 const fileInput = ref(null)
 const helpOpen = ref(false)
+const examplePickerOpen = ref(false)
 const notice = ref('编辑代码后点击运行，或按 F9 单步执行')
 let executionId = 0
 
@@ -83,7 +84,6 @@ function loadProgram() {
 
 function ensureProgram() {
   if (sourceDirty.value || !simulator.value.program || simulator.value.status === 'finished') return loadProgram()
-  simulator.value.setInput(input.value)
   return true
 }
 
@@ -201,6 +201,11 @@ function selectExample(id) {
   loadProgram()
 }
 
+function importExample(id) {
+  selectExample(id)
+  examplePickerOpen.value = false
+}
+
 function changeArchitecture(id) {
   if (architecture.value === id) return
   executionId += 1
@@ -257,7 +262,10 @@ function clearOutput() {
 }
 
 function handleKeyboard(event) {
-  if (event.key === 'Escape') helpOpen.value = false
+  if (event.key === 'Escape') {
+    helpOpen.value = false
+    examplePickerOpen.value = false
+  }
   if (event.key === 'F5') {
     event.preventDefault()
     toggleRun()
@@ -296,6 +304,7 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKeyboard))
         <span class="brand-subtitle">汇编调试工作台</span>
       </div>
       <div class="header-actions">
+        <button class="button ghost" @click="examplePickerOpen = true"><FilePlus2 :size="15" />导入样例</button>
         <button class="button ghost" @click="openFile"><FolderOpen :size="15" />打开</button>
         <button class="button ghost" @click="downloadFile"><Download :size="15" />导出</button>
         <button class="icon-button help-button" title="使用指南" @click="helpOpen = true"><CircleHelp :size="18" /></button>
@@ -370,6 +379,26 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKeyboard))
       </div>
     </footer>
 
+    <div v-if="examplePickerOpen" class="modal-backdrop" @click.self="examplePickerOpen = false">
+      <section class="help-modal example-modal" role="dialog" aria-modal="true" aria-labelledby="example-picker-title">
+        <header>
+          <div><span class="eyebrow">EXAMPLES</span><h2 id="example-picker-title">导入预置样例</h2></div>
+          <button class="icon-button" aria-label="关闭样例选择" @click="examplePickerOpen = false"><X :size="18" /></button>
+        </header>
+        <div class="example-picker">
+          <p>选择 {{ config.name }} / {{ config.detail }} 汇编样例。导入后将替换当前代码，并载入样例的默认输入。</p>
+          <div class="example-list">
+            <button v-for="example in examples" :key="example.id" class="example-option" @click="importExample(example.id)">
+              <FileCode2 :size="20" />
+              <span class="example-option-text"><strong>{{ example.name }}</strong><small>{{ example.description }}</small></span>
+              <ChevronRight :size="16" />
+            </button>
+          </div>
+        </div>
+        <footer><span>{{ config.name }} · {{ config.detail }}</span><button class="button ghost" @click="examplePickerOpen = false">取消</button></footer>
+      </section>
+    </div>
+
     <div v-if="helpOpen" class="modal-backdrop" @click.self="helpOpen = false">
       <section class="help-modal">
         <header><div><span class="eyebrow">QUICK START</span><h2>汇编调试指南</h2></div><button class="icon-button" @click="helpOpen = false"><X :size="18" /></button></header>
@@ -377,7 +406,17 @@ onBeforeUnmount(() => window.removeEventListener('keydown', handleKeyboard))
           <div class="help-step"><span>01</span><div><h3>装载与运行</h3><p>选择架构和示例，或粘贴 FCC 编译器生成的汇编。标准输入在下方控制台填写。</p></div></div>
           <div class="help-step"><span>02</span><div><h3>设置断点</h3><p>点击指令所在行号。F5 执行到断点，F9 单步进入，F10 步过函数调用。</p></div></div>
           <div class="help-step"><span>03</span><div><h3>观察机器状态</h3><p>寄存器支持 HEX / DEC / UINT / BIN，值可直接编辑。内存视图可按 SP、FP、堆和数据段定位。</p></div></div>
-          <div class="syscall-note"><strong>系统调用</strong><p>SPIM：print/read integer、string、char、sbrk、exit。RISC-V：read (63)、write (64)、exit (93)、sbrk (214)，并直接模拟 FCC 六个 I/O 函数。</p></div>
+          <div class="syscall-note">
+            <strong>FCC 运行时函数</strong>
+            <ul class="runtime-list">
+              <li><code>getint()</code> 读取带符号十进制整数；<code>getchar()</code> 读取字符，EOF 返回 -1。</li>
+              <li><code>getstr(buf)</code> 读取一行到缓冲区，去掉换行并补 <code>\0</code>，返回字节数。</li>
+              <li><code>putint(x)</code> 输出有符号整数；<code>putchar(c)</code> 输出字符；<code>putstr(s)</code> 输出 NUL 结尾字符串。</li>
+              <li><code>malloc</code>、<code>__malloc_*</code> 提供堆分配后备实现；内置 <code>free</code>/<code>__free_*</code> 不回收内存。</li>
+            </ul>
+            <p>SPIM 使用 $a0–$a3 传参、$v0 返回；RISC-V 使用 a0–a7 传参、a0 返回。程序定义同名标签时，优先执行程序自身的运行时实现。</p>
+          </div>
+          <div class="syscall-note"><strong>系统调用</strong><p>SPIM：print/read integer、string、char、sbrk、exit。RISC-V：read (63)、write (64)、exit (93)、sbrk (214)。</p></div>
         </div>
         <footer><span>面向 FCC 编译原理课程设计</span><button class="button primary" @click="helpOpen = false">开始调试</button></footer>
       </section>
