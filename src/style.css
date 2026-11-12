@@ -71,7 +71,7 @@ kbd { font-family: var(--mono); font-size: 9px; line-height: 16px; min-width: 20
 .tool-button { color: #b3bdc9; border-color: transparent; }
 .tool-button span { margin-right: 2px; }
 .reset-button { margin-left: 2px; }
-.toolbar-state { margin-left: auto; display: flex; align-items: center; gap: 14px; }
+.toolbar-state { display: flex; align-items: center; gap: 14px; }
 .state-pill { display: inline-flex; align-items: center; gap: 6px; font-size: 11px; color: var(--muted); }
 .state-pill i { width: 6px; height: 6px; border-radius: 50%; background: #667383; }
 .state-pill.running { color: var(--accent); }
@@ -226,7 +226,7 @@ th { position: sticky; top: 0; z-index: 1; background: #111821; color: #586779; 
 .console-output { flex: 1; min-height: 0; overflow: auto; padding: 10px 15px; background: #0d141c; color: #c0d5ca; font: 11px/1.65 var(--mono); }
 .console-output pre { margin: 0; white-space: pre-wrap; word-break: break-word; font: inherit; }
 .console-output.placeholder { color: #435265; }
-.console-cursor { display: inline-block; width: 6px; height: 12px; margin-left: 3px; vertical-align: -2px; background: #4f766a; animation: blink 1.2s steps(1) infinite; }
+.console-cursor { display: inline-block; width: 6px; height: 12px; vertical-align: -2px; background: #4f766a; animation: blink 1.2s steps(1) infinite; }
 @keyframes blink { 50% { opacity: 0; } }
 .console-input-wrap { flex: 1; min-height: 0; background: #0d141c; }
 .console-input-wrap textarea { width: 100%; height: 100%; resize: none; border: 0; outline: 0; padding: 10px 15px; background: transparent; color: #c5d0dc; font: 11px/1.65 var(--mono); }

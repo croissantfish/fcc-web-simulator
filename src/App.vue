@@ -416,6 +416,11 @@ onBeforeUnmount(() => {
         </button>
       </div>
       <span class="toolbar-divider" />
+      <div class="toolbar-state">
+        <span class="state-pill" :class="status"><i />{{ statusLabel }}</span>
+        <span class="pc-indicator mono">PC {{ simulator.program ? hex(simulator.pc) : '—' }}</span>
+      </div>
+      <span class="toolbar-divider" />
       <div class="execution-controls">
         <button class="button primary run-button" :disabled="status === 'waiting'" @click="toggleRun">
           <Pause v-if="running" :size="15" fill="currentColor" />
@@ -426,10 +431,6 @@ onBeforeUnmount(() => {
         <button class="button tool-button" :disabled="running || status === 'waiting'" title="单步执行 (F9)" @click="stepOnce"><StepForward :size="16" /><span>单步</span><kbd>F9</kbd></button>
         <button class="button tool-button" :disabled="running || status === 'waiting'" title="步过函数调用 (F10)" @click="stepOver"><ChevronRight :size="17" /><span>步过</span><kbd>F10</kbd></button>
         <button class="icon-button reset-button" :disabled="running" title="重置执行" @click="resetProgram"><RotateCcw :size="16" /></button>
-      </div>
-      <div class="toolbar-state">
-        <span class="state-pill" :class="status"><i />{{ statusLabel }}</span>
-        <span class="pc-indicator mono">PC {{ simulator.program ? hex(simulator.pc) : '—' }}</span>
       </div>
     </div>
 

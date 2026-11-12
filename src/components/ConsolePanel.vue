@@ -70,9 +70,11 @@ watch(() => props.status, async (status) => {
       <section class="console-pane">
         <header class="console-pane-header"><span>标准输出</span><span>stdout</span></header>
         <div class="console-output" :class="{ placeholder: !output }">
-          <pre v-if="output">{{ output }}</pre>
-          <span v-else>程序输出将在这里显示。</span>
-          <span class="console-cursor" />
+          <pre v-if="output">{{ output }}<span class="console-cursor" /></pre>
+          <template v-else>
+            <span class="console-cursor" />
+            <span>程序输出将在这里显示。</span>
+          </template>
         </div>
       </section>
       <section class="console-pane">
@@ -96,8 +98,11 @@ watch(() => props.status, async (status) => {
         :class="{ placeholder: !output }"
         @click="focusTerminal"
       >
-        <pre v-if="output">{{ output }}</pre>
-        <span v-if="!output && status !== 'waiting'">运行程序后，输出与输入将在这里显示。</span>
+        <pre v-if="output">{{ output }}<span v-if="status !== 'waiting'" class="console-cursor" /></pre>
+        <template v-if="!output && status !== 'waiting'">
+          <span class="console-cursor" />
+          <span>运行程序后，输出与输入将在这里显示。</span>
+        </template>
         <form v-if="status === 'waiting'" class="console-inline-input" @submit.prevent="submitLine" @click.stop>
           <input
             ref="terminalInput"
@@ -108,7 +113,6 @@ watch(() => props.status, async (status) => {
             spellcheck="false"
           >
         </form>
-        <span v-else class="console-cursor" />
       </div>
     </div>
 
