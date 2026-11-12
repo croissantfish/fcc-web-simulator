@@ -10,189 +10,189 @@ main:
         addiu $sp, $sp, -608
         sw    $ra, 604($sp)
         sw    $fp, 600($sp)
-        move  $fp, $sp
+        addiu $fp, $sp, 608
 _entry_0:
         jal   getint
-        sw    $v0, 416($fp)
-        addiu $t0, $fp, 400
-        sw    $t0, 420($fp)
-        lw    $t2, 420($fp)
-        lw    $t0, 416($fp)
+        sw    $v0, -192($fp)
+        addiu $t0, $fp, -208
+        sw    $t0, -188($fp)
+        lw    $t2, -188($fp)
+        lw    $t0, -192($fp)
         sw    $t0, 0($t2)
-        addiu $t0, $fp, 404
-        sw    $t0, 424($fp)
-        lw    $t2, 424($fp)
+        addiu $t0, $fp, -204
+        sw    $t0, -184($fp)
+        lw    $t2, -184($fp)
         li    $t0, 0
         sw    $t0, 0($t2)
         j     _while_start_1
 _while_start_1:
-        addiu $t0, $fp, 404
-        sw    $t0, 428($fp)
-        lw    $t0, 428($fp)
+        addiu $t0, $fp, -204
+        sw    $t0, -180($fp)
+        lw    $t0, -180($fp)
         lw    $t0, 0($t0)
-        sw    $t0, 432($fp)
-        addiu $t0, $fp, 400
-        sw    $t0, 436($fp)
-        lw    $t0, 436($fp)
+        sw    $t0, -176($fp)
+        addiu $t0, $fp, -208
+        sw    $t0, -172($fp)
+        lw    $t0, -172($fp)
         lw    $t0, 0($t0)
-        sw    $t0, 440($fp)
-        lw    $t0, 432($fp)
-        lw    $t1, 440($fp)
+        sw    $t0, -168($fp)
+        lw    $t0, -176($fp)
+        lw    $t1, -168($fp)
         slt   $t0, $t0, $t1
-        sw    $t0, 444($fp)
-        lw    $t0, 444($fp)
+        sw    $t0, -164($fp)
+        lw    $t0, -164($fp)
         beqz  $t0, _while_end_3
         j     _while_body_2
 _while_body_2:
         jal   getint
-        sw    $v0, 448($fp)
-        addiu $t0, $fp, 0
-        sw    $t0, 452($fp)
-        addiu $t0, $fp, 404
-        sw    $t0, 456($fp)
-        lw    $t0, 456($fp)
+        sw    $v0, -160($fp)
+        addiu $t0, $fp, -608
+        sw    $t0, -156($fp)
+        addiu $t0, $fp, -204
+        sw    $t0, -152($fp)
+        lw    $t0, -152($fp)
         lw    $t0, 0($t0)
-        sw    $t0, 460($fp)
-        lw    $t0, 460($fp)
+        sw    $t0, -148($fp)
+        lw    $t0, -148($fp)
         li    $t1, 4
         mul   $t0, $t0, $t1
-        sw    $t0, 464($fp)
-        lw    $t0, 452($fp)
-        lw    $t1, 464($fp)
+        sw    $t0, -144($fp)
+        lw    $t0, -156($fp)
+        lw    $t1, -144($fp)
         add   $t0, $t0, $t1
-        sw    $t0, 468($fp)
-        lw    $t2, 468($fp)
-        lw    $t0, 448($fp)
+        sw    $t0, -140($fp)
+        lw    $t2, -140($fp)
+        lw    $t0, -160($fp)
         sw    $t0, 0($t2)
-        addiu $t0, $fp, 404
-        sw    $t0, 472($fp)
-        lw    $t0, 472($fp)
+        addiu $t0, $fp, -204
+        sw    $t0, -136($fp)
+        lw    $t0, -136($fp)
         lw    $t0, 0($t0)
-        sw    $t0, 476($fp)
-        lw    $t0, 476($fp)
+        sw    $t0, -132($fp)
+        lw    $t0, -132($fp)
         li    $t1, 1
         add   $t0, $t0, $t1
-        sw    $t0, 480($fp)
-        addiu $t0, $fp, 404
-        sw    $t0, 484($fp)
-        lw    $t2, 484($fp)
-        lw    $t0, 480($fp)
+        sw    $t0, -128($fp)
+        addiu $t0, $fp, -204
+        sw    $t0, -124($fp)
+        lw    $t2, -124($fp)
+        lw    $t0, -128($fp)
         sw    $t0, 0($t2)
         j     _while_start_1
 _while_end_3:
         jal   getint
-        sw    $v0, 488($fp)
-        addiu $t0, $fp, 408
-        sw    $t0, 492($fp)
-        lw    $t2, 492($fp)
-        lw    $t0, 488($fp)
+        sw    $v0, -120($fp)
+        addiu $t0, $fp, -200
+        sw    $t0, -116($fp)
+        lw    $t2, -116($fp)
+        lw    $t0, -120($fp)
         sw    $t0, 0($t2)
         li    $t0, 1
         neg   $t0, $t0
-        sw    $t0, 496($fp)
-        addiu $t0, $fp, 412
-        sw    $t0, 500($fp)
-        lw    $t2, 500($fp)
-        lw    $t0, 496($fp)
+        sw    $t0, -112($fp)
+        addiu $t0, $fp, -196
+        sw    $t0, -108($fp)
+        lw    $t2, -108($fp)
+        lw    $t0, -112($fp)
         sw    $t0, 0($t2)
-        addiu $t0, $fp, 404
-        sw    $t0, 504($fp)
-        lw    $t2, 504($fp)
+        addiu $t0, $fp, -204
+        sw    $t0, -104($fp)
+        lw    $t2, -104($fp)
         li    $t0, 0
         sw    $t0, 0($t2)
         j     _while_start_4
 _while_start_4:
-        addiu $t0, $fp, 404
-        sw    $t0, 508($fp)
-        lw    $t0, 508($fp)
+        addiu $t0, $fp, -204
+        sw    $t0, -100($fp)
+        lw    $t0, -100($fp)
         lw    $t0, 0($t0)
-        sw    $t0, 512($fp)
-        addiu $t0, $fp, 400
-        sw    $t0, 516($fp)
-        lw    $t0, 516($fp)
+        sw    $t0, -96($fp)
+        addiu $t0, $fp, -208
+        sw    $t0, -92($fp)
+        lw    $t0, -92($fp)
         lw    $t0, 0($t0)
-        sw    $t0, 520($fp)
-        lw    $t0, 512($fp)
-        lw    $t1, 520($fp)
+        sw    $t0, -88($fp)
+        lw    $t0, -96($fp)
+        lw    $t1, -88($fp)
         slt   $t0, $t0, $t1
-        sw    $t0, 524($fp)
-        lw    $t0, 524($fp)
+        sw    $t0, -84($fp)
+        lw    $t0, -84($fp)
         beqz  $t0, _while_end_6
         j     _while_body_5
 _while_body_5:
-        addiu $t0, $fp, 0
-        sw    $t0, 528($fp)
-        addiu $t0, $fp, 404
-        sw    $t0, 532($fp)
-        lw    $t0, 532($fp)
+        addiu $t0, $fp, -608
+        sw    $t0, -80($fp)
+        addiu $t0, $fp, -204
+        sw    $t0, -76($fp)
+        lw    $t0, -76($fp)
         lw    $t0, 0($t0)
-        sw    $t0, 536($fp)
-        lw    $t0, 536($fp)
+        sw    $t0, -72($fp)
+        lw    $t0, -72($fp)
         li    $t1, 4
         mul   $t0, $t0, $t1
-        sw    $t0, 540($fp)
-        lw    $t0, 528($fp)
-        lw    $t1, 540($fp)
+        sw    $t0, -68($fp)
+        lw    $t0, -80($fp)
+        lw    $t1, -68($fp)
         add   $t0, $t0, $t1
-        sw    $t0, 544($fp)
-        lw    $t0, 544($fp)
+        sw    $t0, -64($fp)
+        lw    $t0, -64($fp)
         lw    $t0, 0($t0)
-        sw    $t0, 548($fp)
-        addiu $t0, $fp, 408
-        sw    $t0, 552($fp)
-        lw    $t0, 552($fp)
+        sw    $t0, -60($fp)
+        addiu $t0, $fp, -200
+        sw    $t0, -56($fp)
+        lw    $t0, -56($fp)
         lw    $t0, 0($t0)
-        sw    $t0, 556($fp)
-        lw    $t0, 548($fp)
-        lw    $t1, 556($fp)
+        sw    $t0, -52($fp)
+        lw    $t0, -60($fp)
+        lw    $t1, -52($fp)
         seq   $t0, $t0, $t1
-        sw    $t0, 560($fp)
-        lw    $t0, 560($fp)
+        sw    $t0, -48($fp)
+        lw    $t0, -48($fp)
         beqz  $t0, _if_else_8
         j     _if_then_7
 _while_end_6:
-        addiu $t0, $fp, 412
-        sw    $t0, 592($fp)
-        lw    $t0, 592($fp)
+        addiu $t0, $fp, -196
+        sw    $t0, -16($fp)
+        lw    $t0, -16($fp)
         lw    $t0, 0($t0)
-        sw    $t0, 596($fp)
-        lw    $a0, 596($fp)
+        sw    $t0, -12($fp)
+        lw    $a0, -12($fp)
         jal   putint
         li    $a0, 10
         jal   putchar
         li    $v0, 0
-        lw    $ra, 604($sp)
-        lw    $fp, 600($sp)
+        lw    $ra, -4($fp)
+        lw    $fp, -8($fp)
         addiu $sp, $sp, 608
         jr    $ra
 _if_then_7:
-        addiu $t0, $fp, 404
-        sw    $t0, 564($fp)
-        lw    $t0, 564($fp)
+        addiu $t0, $fp, -204
+        sw    $t0, -44($fp)
+        lw    $t0, -44($fp)
         lw    $t0, 0($t0)
-        sw    $t0, 568($fp)
-        addiu $t0, $fp, 412
-        sw    $t0, 572($fp)
-        lw    $t2, 572($fp)
-        lw    $t0, 568($fp)
+        sw    $t0, -40($fp)
+        addiu $t0, $fp, -196
+        sw    $t0, -36($fp)
+        lw    $t2, -36($fp)
+        lw    $t0, -40($fp)
         sw    $t0, 0($t2)
         j     _if_end_9
 _if_else_8:
         j     _if_end_9
 _if_end_9:
-        addiu $t0, $fp, 404
-        sw    $t0, 576($fp)
-        lw    $t0, 576($fp)
+        addiu $t0, $fp, -204
+        sw    $t0, -32($fp)
+        lw    $t0, -32($fp)
         lw    $t0, 0($t0)
-        sw    $t0, 580($fp)
-        lw    $t0, 580($fp)
+        sw    $t0, -28($fp)
+        lw    $t0, -28($fp)
         li    $t1, 1
         add   $t0, $t0, $t1
-        sw    $t0, 584($fp)
-        addiu $t0, $fp, 404
-        sw    $t0, 588($fp)
-        lw    $t2, 588($fp)
-        lw    $t0, 584($fp)
+        sw    $t0, -24($fp)
+        addiu $t0, $fp, -204
+        sw    $t0, -20($fp)
+        lw    $t2, -20($fp)
+        lw    $t0, -24($fp)
         sw    $t0, 0($t2)
         j     _while_start_4
 

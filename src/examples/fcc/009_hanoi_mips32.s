@@ -14,197 +14,197 @@ func_cd:
         addiu $sp, $sp, -192
         sw    $ra, 188($sp)
         sw    $fp, 184($sp)
-        move  $fp, $sp
-        sw    $a0, 0($fp)
-        sw    $a1, 4($fp)
-        sw    $a2, 8($fp)
-        sw    $a3, 12($fp)
+        addiu $fp, $sp, 192
+        sw    $a0, -192($fp)
+        sw    $a1, -188($fp)
+        sw    $a2, -184($fp)
+        sw    $a3, -180($fp)
 _entry_0:
-        addiu $t0, $fp, 0
-        sw    $t0, 16($fp)
-        lw    $t0, 16($fp)
+        addiu $t0, $fp, -192
+        sw    $t0, -176($fp)
+        lw    $t0, -176($fp)
         lw    $t0, 0($t0)
-        sw    $t0, 20($fp)
-        lw    $t0, 20($fp)
+        sw    $t0, -172($fp)
+        lw    $t0, -172($fp)
         li    $t1, 1
         seq   $t0, $t0, $t1
-        sw    $t0, 24($fp)
-        lw    $t0, 24($fp)
+        sw    $t0, -168($fp)
+        lw    $t0, -168($fp)
         beqz  $t0, _if_else_2
         j     _if_then_1
 _if_then_1:
         la    $a0, _str0
         jal   putstr
-        addiu $t0, $fp, 4
-        sw    $t0, 28($fp)
-        lw    $t0, 28($fp)
+        addiu $t0, $fp, -188
+        sw    $t0, -164($fp)
+        lw    $t0, -164($fp)
         lb    $t0, 0($t0)
-        sw    $t0, 32($fp)
-        lw    $a0, 32($fp)
+        sw    $t0, -160($fp)
+        lw    $a0, -160($fp)
         jal   putchar
         la    $a0, _str1
         jal   putstr
-        addiu $t0, $fp, 12
-        sw    $t0, 36($fp)
-        lw    $t0, 36($fp)
+        addiu $t0, $fp, -180
+        sw    $t0, -156($fp)
+        lw    $t0, -156($fp)
         lb    $t0, 0($t0)
-        sw    $t0, 40($fp)
-        lw    $a0, 40($fp)
+        sw    $t0, -152($fp)
+        lw    $a0, -152($fp)
         jal   putchar
         li    $a0, 10
         jal   putchar
         la    $t0, __fcc_global_count
-        sw    $t0, 44($fp)
-        lw    $t0, 44($fp)
+        sw    $t0, -148($fp)
+        lw    $t0, -148($fp)
         lw    $t0, 0($t0)
-        sw    $t0, 48($fp)
-        lw    $t0, 48($fp)
+        sw    $t0, -144($fp)
+        lw    $t0, -144($fp)
         li    $t1, 1
         add   $t0, $t0, $t1
-        sw    $t0, 52($fp)
+        sw    $t0, -140($fp)
         la    $t0, __fcc_global_count
-        sw    $t0, 56($fp)
-        lw    $t2, 56($fp)
-        lw    $t0, 52($fp)
+        sw    $t0, -136($fp)
+        lw    $t2, -136($fp)
+        lw    $t0, -140($fp)
         sw    $t0, 0($t2)
         j     _if_end_3
 _if_else_2:
-        addiu $t0, $fp, 0
-        sw    $t0, 60($fp)
-        lw    $t0, 60($fp)
+        addiu $t0, $fp, -192
+        sw    $t0, -132($fp)
+        lw    $t0, -132($fp)
         lw    $t0, 0($t0)
-        sw    $t0, 64($fp)
-        lw    $t0, 64($fp)
+        sw    $t0, -128($fp)
+        lw    $t0, -128($fp)
         li    $t1, 1
         sub   $t0, $t0, $t1
-        sw    $t0, 68($fp)
-        addiu $t0, $fp, 4
-        sw    $t0, 72($fp)
-        lw    $t0, 72($fp)
+        sw    $t0, -124($fp)
+        addiu $t0, $fp, -188
+        sw    $t0, -120($fp)
+        lw    $t0, -120($fp)
         lb    $t0, 0($t0)
-        sw    $t0, 76($fp)
-        addiu $t0, $fp, 12
-        sw    $t0, 80($fp)
-        lw    $t0, 80($fp)
+        sw    $t0, -116($fp)
+        addiu $t0, $fp, -180
+        sw    $t0, -112($fp)
+        lw    $t0, -112($fp)
         lb    $t0, 0($t0)
-        sw    $t0, 84($fp)
-        addiu $t0, $fp, 8
-        sw    $t0, 88($fp)
-        lw    $t0, 88($fp)
+        sw    $t0, -108($fp)
+        addiu $t0, $fp, -184
+        sw    $t0, -104($fp)
+        lw    $t0, -104($fp)
         lb    $t0, 0($t0)
-        sw    $t0, 92($fp)
-        lw    $a0, 68($fp)
-        lw    $a1, 76($fp)
-        lw    $a2, 84($fp)
-        lw    $a3, 92($fp)
+        sw    $t0, -100($fp)
+        lw    $a0, -124($fp)
+        lw    $a1, -116($fp)
+        lw    $a2, -108($fp)
+        lw    $a3, -100($fp)
         jal   func_cd
-        sw    $v0, 96($fp)
+        sw    $v0, -96($fp)
         la    $a0, _str2
         jal   putstr
-        addiu $t0, $fp, 4
-        sw    $t0, 100($fp)
-        lw    $t0, 100($fp)
+        addiu $t0, $fp, -188
+        sw    $t0, -92($fp)
+        lw    $t0, -92($fp)
         lb    $t0, 0($t0)
-        sw    $t0, 104($fp)
-        lw    $a0, 104($fp)
+        sw    $t0, -88($fp)
+        lw    $a0, -88($fp)
         jal   putchar
         la    $a0, _str3
         jal   putstr
-        addiu $t0, $fp, 12
-        sw    $t0, 108($fp)
-        lw    $t0, 108($fp)
+        addiu $t0, $fp, -180
+        sw    $t0, -84($fp)
+        lw    $t0, -84($fp)
         lb    $t0, 0($t0)
-        sw    $t0, 112($fp)
-        lw    $a0, 112($fp)
+        sw    $t0, -80($fp)
+        lw    $a0, -80($fp)
         jal   putchar
         li    $a0, 10
         jal   putchar
         la    $t0, __fcc_global_count
-        sw    $t0, 116($fp)
-        lw    $t0, 116($fp)
+        sw    $t0, -76($fp)
+        lw    $t0, -76($fp)
         lw    $t0, 0($t0)
-        sw    $t0, 120($fp)
-        lw    $t0, 120($fp)
+        sw    $t0, -72($fp)
+        lw    $t0, -72($fp)
         li    $t1, 1
         add   $t0, $t0, $t1
-        sw    $t0, 124($fp)
+        sw    $t0, -68($fp)
         la    $t0, __fcc_global_count
-        sw    $t0, 128($fp)
-        lw    $t2, 128($fp)
-        lw    $t0, 124($fp)
+        sw    $t0, -64($fp)
+        lw    $t2, -64($fp)
+        lw    $t0, -68($fp)
         sw    $t0, 0($t2)
-        addiu $t0, $fp, 0
-        sw    $t0, 132($fp)
-        lw    $t0, 132($fp)
+        addiu $t0, $fp, -192
+        sw    $t0, -60($fp)
+        lw    $t0, -60($fp)
         lw    $t0, 0($t0)
-        sw    $t0, 136($fp)
-        lw    $t0, 136($fp)
+        sw    $t0, -56($fp)
+        lw    $t0, -56($fp)
         li    $t1, 1
         sub   $t0, $t0, $t1
-        sw    $t0, 140($fp)
-        addiu $t0, $fp, 8
-        sw    $t0, 144($fp)
-        lw    $t0, 144($fp)
+        sw    $t0, -52($fp)
+        addiu $t0, $fp, -184
+        sw    $t0, -48($fp)
+        lw    $t0, -48($fp)
         lb    $t0, 0($t0)
-        sw    $t0, 148($fp)
-        addiu $t0, $fp, 4
-        sw    $t0, 152($fp)
-        lw    $t0, 152($fp)
+        sw    $t0, -44($fp)
+        addiu $t0, $fp, -188
+        sw    $t0, -40($fp)
+        lw    $t0, -40($fp)
         lb    $t0, 0($t0)
-        sw    $t0, 156($fp)
-        addiu $t0, $fp, 12
-        sw    $t0, 160($fp)
-        lw    $t0, 160($fp)
+        sw    $t0, -36($fp)
+        addiu $t0, $fp, -180
+        sw    $t0, -32($fp)
+        lw    $t0, -32($fp)
         lb    $t0, 0($t0)
-        sw    $t0, 164($fp)
-        lw    $a0, 140($fp)
-        lw    $a1, 148($fp)
-        lw    $a2, 156($fp)
-        lw    $a3, 164($fp)
+        sw    $t0, -28($fp)
+        lw    $a0, -52($fp)
+        lw    $a1, -44($fp)
+        lw    $a2, -36($fp)
+        lw    $a3, -28($fp)
         jal   func_cd
-        sw    $v0, 168($fp)
+        sw    $v0, -24($fp)
         j     _if_end_3
 _if_end_3:
-        lw    $ra, 188($sp)
-        lw    $fp, 184($sp)
+        lw    $ra, -4($fp)
+        lw    $fp, -8($fp)
         addiu $sp, $sp, 192
         jr    $ra
 main:
         addiu $sp, $sp, -48
         sw    $ra, 44($sp)
         sw    $fp, 40($sp)
-        move  $fp, $sp
+        addiu $fp, $sp, 48
 _entry_4:
         jal   getint
-        sw    $v0, 4($fp)
-        addiu $t0, $fp, 0
-        sw    $t0, 8($fp)
-        lw    $t2, 8($fp)
-        lw    $t0, 4($fp)
+        sw    $v0, -44($fp)
+        addiu $t0, $fp, -48
+        sw    $t0, -40($fp)
+        lw    $t2, -40($fp)
+        lw    $t0, -44($fp)
         sw    $t0, 0($t2)
-        addiu $t0, $fp, 0
-        sw    $t0, 12($fp)
-        lw    $t0, 12($fp)
+        addiu $t0, $fp, -48
+        sw    $t0, -36($fp)
+        lw    $t0, -36($fp)
         lw    $t0, 0($t0)
-        sw    $t0, 16($fp)
-        lw    $a0, 16($fp)
+        sw    $t0, -32($fp)
+        lw    $a0, -32($fp)
         li    $a1, 65
         li    $a2, 66
         li    $a3, 67
         jal   func_cd
-        sw    $v0, 20($fp)
+        sw    $v0, -28($fp)
         la    $t0, __fcc_global_count
-        sw    $t0, 24($fp)
-        lw    $t0, 24($fp)
+        sw    $t0, -24($fp)
+        lw    $t0, -24($fp)
         lw    $t0, 0($t0)
-        sw    $t0, 28($fp)
-        lw    $a0, 28($fp)
+        sw    $t0, -20($fp)
+        lw    $a0, -20($fp)
         jal   putint
         li    $a0, 10
         jal   putchar
         li    $v0, 0
-        lw    $ra, 44($sp)
-        lw    $fp, 40($sp)
+        lw    $ra, -4($fp)
+        lw    $fp, -8($fp)
         addiu $sp, $sp, 48
         jr    $ra
 

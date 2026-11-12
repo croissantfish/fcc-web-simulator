@@ -6,11 +6,13 @@ import hanoiMips from './009_hanoi_mips32.s?raw'
 import hanoiRiscv from './009_hanoi_riscv32.s?raw'
 import expressionMips from './018_expr_precedence_mips32.s?raw'
 import expressionRiscv from './018_expr_precedence_riscv32.s?raw'
+import callPressureMips from './026_call_save_pressure_mips32.s?raw'
+import callPressureRiscv from './026_call_save_pressure_riscv32.s?raw'
 
 const metadata = [
   {
     id: 'fcc-linear-search',
-    name: '线性查找（FCC）',
+    name: '线性查找',
     description: 'FCC 编译器产物 · 数组、循环与顺序查找',
     input: '5\n1 3 5 7 9\n5\n',
     mips: linearSearchMips,
@@ -18,7 +20,7 @@ const metadata = [
   },
   {
     id: 'fcc-binary-search',
-    name: '二分查找（FCC）',
+    name: '二分查找',
     description: 'FCC 编译器产物 · 函数调用与二分查找',
     input: '5\n1 3 5 7 9\n7\n',
     mips: binarySearchMips,
@@ -26,7 +28,7 @@ const metadata = [
   },
   {
     id: 'fcc-hanoi',
-    name: '汉诺塔（FCC）',
+    name: '汉诺塔',
     description: 'FCC 编译器产物 · 递归、字符与字符串输出',
     input: '3\n',
     mips: hanoiMips,
@@ -34,11 +36,19 @@ const metadata = [
   },
   {
     id: 'fcc-expression',
-    name: '表达式求值（FCC）',
+    name: '表达式求值',
     description: 'FCC 编译器产物 · 优先级、乘除、取余与短路求值',
     input: '17 5 3\n',
     mips: expressionMips,
     riscv: expressionRiscv,
+  },
+  {
+    id: 'fcc-call-pressure',
+    name: '多层函数调用（O0）',
+    description: '递归与嵌套调用 · 局部变量、调用保存及 SP/FP 栈帧',
+    input: '3\n',
+    mips: callPressureMips,
+    riscv: callPressureRiscv,
   },
 ]
 

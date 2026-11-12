@@ -9,59 +9,59 @@ __fcc_func_show:
     addi sp, sp, -32
     sw   ra, 28(sp)
     sw   fp, 24(sp)
-    mv   fp, sp
-    sw   a0, 0(fp)
-    sw   a1, 4(fp)
+    addi fp, sp, 32
+    sw   a0, -32(fp)
+    sw   a1, -28(fp)
 _entry_0:
     li   a0, 69
     call putchar
-    addi t0, fp, 0
-    sw   t0, 8(fp)
-    lw   t0, 8(fp)
+    addi t0, fp, -32
+    sw   t0, -24(fp)
+    lw   t0, -24(fp)
     lw   t0, 0(t0)
-    sw   t0, 12(fp)
-    lw   a0, 12(fp)
+    sw   t0, -20(fp)
+    lw   a0, -20(fp)
     call putint
     li   a0, 32
     call putchar
-    addi t0, fp, 4
-    sw   t0, 16(fp)
-    lw   t0, 16(fp)
+    addi t0, fp, -28
+    sw   t0, -16(fp)
+    lw   t0, -16(fp)
     lw   t0, 0(t0)
-    sw   t0, 20(fp)
-    lw   a0, 20(fp)
+    sw   t0, -12(fp)
+    lw   a0, -12(fp)
     call putint
     li   a0, 10
     call putchar
-    lw   ra, 28(sp)
-    lw   fp, 24(sp)
+    lw   ra, -4(fp)
+    lw   fp, -8(fp)
     addi sp, sp, 32
     ret
 __fcc_func_show_bool:
     addi sp, sp, -32
     sw   ra, 28(sp)
     sw   fp, 24(sp)
-    mv   fp, sp
-    sw   a0, 0(fp)
-    sw   a1, 4(fp)
+    addi fp, sp, 32
+    sw   a0, -32(fp)
+    sw   a1, -28(fp)
 _entry_1:
     li   a0, 69
     call putchar
-    addi t0, fp, 0
-    sw   t0, 8(fp)
-    lw   t0, 8(fp)
+    addi t0, fp, -32
+    sw   t0, -24(fp)
+    lw   t0, -24(fp)
     lw   t0, 0(t0)
-    sw   t0, 12(fp)
-    lw   a0, 12(fp)
+    sw   t0, -20(fp)
+    lw   a0, -20(fp)
     call putint
     li   a0, 32
     call putchar
-    addi t0, fp, 4
-    sw   t0, 16(fp)
-    lw   t0, 16(fp)
+    addi t0, fp, -28
+    sw   t0, -16(fp)
+    lw   t0, -16(fp)
     lw   t0, 0(t0)
-    sw   t0, 20(fp)
-    lw   t0, 20(fp)
+    sw   t0, -12(fp)
+    lw   t0, -12(fp)
     beqz t0, _if_else_3
     j    _if_then_2
 _if_then_2:
@@ -75,533 +75,533 @@ _if_else_3:
 _if_end_4:
     li   a0, 10
     call putchar
-    lw   ra, 28(sp)
-    lw   fp, 24(sp)
+    lw   ra, -4(fp)
+    lw   fp, -8(fp)
     addi sp, sp, 32
     ret
 main:
     addi sp, sp, -672
     sw   ra, 668(sp)
     sw   fp, 664(sp)
-    mv   fp, sp
+    addi fp, sp, 672
 _entry_5:
     call getint
-    sw   a0, 12(fp)
-    addi t0, fp, 0
-    sw   t0, 16(fp)
-    lw   t2, 16(fp)
-    lw   t0, 12(fp)
+    sw   a0, -660(fp)
+    addi t0, fp, -672
+    sw   t0, -656(fp)
+    lw   t2, -656(fp)
+    lw   t0, -660(fp)
     sw   t0, 0(t2)
     call getint
-    sw   a0, 20(fp)
-    addi t0, fp, 4
-    sw   t0, 24(fp)
-    lw   t2, 24(fp)
-    lw   t0, 20(fp)
+    sw   a0, -652(fp)
+    addi t0, fp, -668
+    sw   t0, -648(fp)
+    lw   t2, -648(fp)
+    lw   t0, -652(fp)
     sw   t0, 0(t2)
     call getint
-    sw   a0, 28(fp)
-    addi t0, fp, 8
-    sw   t0, 32(fp)
-    lw   t2, 32(fp)
-    lw   t0, 28(fp)
+    sw   a0, -644(fp)
+    addi t0, fp, -664
+    sw   t0, -640(fp)
+    lw   t2, -640(fp)
+    lw   t0, -644(fp)
     sw   t0, 0(t2)
-    addi t0, fp, 0
-    sw   t0, 36(fp)
-    lw   t0, 36(fp)
+    addi t0, fp, -672
+    sw   t0, -636(fp)
+    lw   t0, -636(fp)
     lw   t0, 0(t0)
-    sw   t0, 40(fp)
-    addi t0, fp, 4
-    sw   t0, 44(fp)
-    lw   t0, 44(fp)
+    sw   t0, -632(fp)
+    addi t0, fp, -668
+    sw   t0, -628(fp)
+    lw   t0, -628(fp)
     lw   t0, 0(t0)
-    sw   t0, 48(fp)
-    addi t0, fp, 8
-    sw   t0, 52(fp)
-    lw   t0, 52(fp)
+    sw   t0, -624(fp)
+    addi t0, fp, -664
+    sw   t0, -620(fp)
+    lw   t0, -620(fp)
     lw   t0, 0(t0)
-    sw   t0, 56(fp)
-    lw   t0, 48(fp)
-    lw   t1, 56(fp)
+    sw   t0, -616(fp)
+    lw   t0, -624(fp)
+    lw   t1, -616(fp)
     mul  t0, t0, t1
-    sw   t0, 60(fp)
-    lw   t0, 40(fp)
-    lw   t1, 60(fp)
+    sw   t0, -612(fp)
+    lw   t0, -632(fp)
+    lw   t1, -612(fp)
     add  t0, t0, t1
-    sw   t0, 64(fp)
-    addi t0, fp, 0
-    sw   t0, 68(fp)
-    lw   t0, 68(fp)
+    sw   t0, -608(fp)
+    addi t0, fp, -672
+    sw   t0, -604(fp)
+    lw   t0, -604(fp)
     lw   t0, 0(t0)
-    sw   t0, 72(fp)
-    addi t0, fp, 4
-    sw   t0, 76(fp)
-    lw   t0, 76(fp)
+    sw   t0, -600(fp)
+    addi t0, fp, -668
+    sw   t0, -596(fp)
+    lw   t0, -596(fp)
     lw   t0, 0(t0)
-    sw   t0, 80(fp)
-    lw   t0, 72(fp)
-    lw   t1, 80(fp)
+    sw   t0, -592(fp)
+    lw   t0, -600(fp)
+    lw   t1, -592(fp)
     div  t0, t0, t1
-    sw   t0, 84(fp)
-    lw   t0, 64(fp)
-    lw   t1, 84(fp)
+    sw   t0, -588(fp)
+    lw   t0, -608(fp)
+    lw   t1, -588(fp)
     sub  t0, t0, t1
-    sw   t0, 88(fp)
+    sw   t0, -584(fp)
     li   a0, 1
-    lw   a1, 88(fp)
+    lw   a1, -584(fp)
     call __fcc_func_show
-    sw   a0, 92(fp)
-    addi t0, fp, 0
-    sw   t0, 96(fp)
-    lw   t0, 96(fp)
+    sw   a0, -580(fp)
+    addi t0, fp, -672
+    sw   t0, -576(fp)
+    lw   t0, -576(fp)
     lw   t0, 0(t0)
-    sw   t0, 100(fp)
-    addi t0, fp, 4
-    sw   t0, 104(fp)
-    lw   t0, 104(fp)
+    sw   t0, -572(fp)
+    addi t0, fp, -668
+    sw   t0, -568(fp)
+    lw   t0, -568(fp)
     lw   t0, 0(t0)
-    sw   t0, 108(fp)
-    lw   t0, 100(fp)
-    lw   t1, 108(fp)
+    sw   t0, -564(fp)
+    lw   t0, -572(fp)
+    lw   t1, -564(fp)
     add  t0, t0, t1
-    sw   t0, 112(fp)
-    addi t0, fp, 8
-    sw   t0, 116(fp)
-    lw   t0, 116(fp)
+    sw   t0, -560(fp)
+    addi t0, fp, -664
+    sw   t0, -556(fp)
+    lw   t0, -556(fp)
     lw   t0, 0(t0)
-    sw   t0, 120(fp)
-    lw   t0, 120(fp)
+    sw   t0, -552(fp)
+    lw   t0, -552(fp)
     li   t1, 2
     sub  t0, t0, t1
-    sw   t0, 124(fp)
-    lw   t0, 112(fp)
-    lw   t1, 124(fp)
+    sw   t0, -548(fp)
+    lw   t0, -560(fp)
+    lw   t1, -548(fp)
     mul  t0, t0, t1
-    sw   t0, 128(fp)
+    sw   t0, -544(fp)
     li   a0, 2
-    lw   a1, 128(fp)
+    lw   a1, -544(fp)
     call __fcc_func_show
-    sw   a0, 132(fp)
-    addi t0, fp, 0
-    sw   t0, 136(fp)
-    lw   t0, 136(fp)
+    sw   a0, -540(fp)
+    addi t0, fp, -672
+    sw   t0, -536(fp)
+    lw   t0, -536(fp)
     lw   t0, 0(t0)
-    sw   t0, 140(fp)
-    addi t0, fp, 4
-    sw   t0, 144(fp)
-    lw   t0, 144(fp)
+    sw   t0, -532(fp)
+    addi t0, fp, -668
+    sw   t0, -528(fp)
+    lw   t0, -528(fp)
     lw   t0, 0(t0)
-    sw   t0, 148(fp)
-    lw   t0, 140(fp)
-    lw   t1, 148(fp)
+    sw   t0, -524(fp)
+    lw   t0, -532(fp)
+    lw   t1, -524(fp)
     sub  t0, t0, t1
-    sw   t0, 152(fp)
-    addi t0, fp, 8
-    sw   t0, 156(fp)
-    lw   t0, 156(fp)
+    sw   t0, -520(fp)
+    addi t0, fp, -664
+    sw   t0, -516(fp)
+    lw   t0, -516(fp)
     lw   t0, 0(t0)
-    sw   t0, 160(fp)
-    lw   t0, 152(fp)
-    lw   t1, 160(fp)
+    sw   t0, -512(fp)
+    lw   t0, -520(fp)
+    lw   t1, -512(fp)
     sub  t0, t0, t1
-    sw   t0, 164(fp)
+    sw   t0, -508(fp)
     li   a0, 3
-    lw   a1, 164(fp)
+    lw   a1, -508(fp)
     call __fcc_func_show
-    sw   a0, 168(fp)
+    sw   a0, -504(fp)
     li   t0, 100
     li   t1, 7
     div  t0, t0, t1
-    sw   t0, 172(fp)
-    lw   t0, 172(fp)
+    sw   t0, -500(fp)
+    lw   t0, -500(fp)
     li   t1, 3
     div  t0, t0, t1
-    sw   t0, 176(fp)
+    sw   t0, -496(fp)
     li   a0, 4
-    lw   a1, 176(fp)
+    lw   a1, -496(fp)
     call __fcc_func_show
-    sw   a0, 180(fp)
+    sw   a0, -492(fp)
     li   t0, 100
     li   t1, 17
     rem  t0, t0, t1
-    sw   t0, 184(fp)
-    lw   t0, 184(fp)
+    sw   t0, -488(fp)
+    lw   t0, -488(fp)
     li   t1, 6
     rem  t0, t0, t1
-    sw   t0, 188(fp)
+    sw   t0, -484(fp)
     li   a0, 5
-    lw   a1, 188(fp)
+    lw   a1, -484(fp)
     call __fcc_func_show
-    sw   a0, 192(fp)
-    addi t0, fp, 0
-    sw   t0, 196(fp)
-    lw   t0, 196(fp)
+    sw   a0, -480(fp)
+    addi t0, fp, -672
+    sw   t0, -476(fp)
+    lw   t0, -476(fp)
     lw   t0, 0(t0)
-    sw   t0, 200(fp)
-    lw   t0, 200(fp)
+    sw   t0, -472(fp)
+    lw   t0, -472(fp)
     neg  t0, t0
-    sw   t0, 204(fp)
-    addi t0, fp, 4
-    sw   t0, 208(fp)
-    lw   t0, 208(fp)
+    sw   t0, -468(fp)
+    addi t0, fp, -668
+    sw   t0, -464(fp)
+    lw   t0, -464(fp)
     lw   t0, 0(t0)
-    sw   t0, 212(fp)
-    lw   t0, 204(fp)
-    lw   t1, 212(fp)
+    sw   t0, -460(fp)
+    lw   t0, -468(fp)
+    lw   t1, -460(fp)
     mul  t0, t0, t1
-    sw   t0, 216(fp)
-    addi t0, fp, 8
-    sw   t0, 220(fp)
-    lw   t0, 220(fp)
+    sw   t0, -456(fp)
+    addi t0, fp, -664
+    sw   t0, -452(fp)
+    lw   t0, -452(fp)
     lw   t0, 0(t0)
-    sw   t0, 224(fp)
-    lw   t0, 216(fp)
-    lw   t1, 224(fp)
+    sw   t0, -448(fp)
+    lw   t0, -456(fp)
+    lw   t1, -448(fp)
     add  t0, t0, t1
-    sw   t0, 228(fp)
+    sw   t0, -444(fp)
     li   a0, 6
-    lw   a1, 228(fp)
+    lw   a1, -444(fp)
     call __fcc_func_show
-    sw   a0, 232(fp)
-    addi t0, fp, 0
-    sw   t0, 236(fp)
-    lw   t0, 236(fp)
+    sw   a0, -440(fp)
+    addi t0, fp, -672
+    sw   t0, -436(fp)
+    lw   t0, -436(fp)
     lw   t0, 0(t0)
-    sw   t0, 240(fp)
-    addi t0, fp, 4
-    sw   t0, 244(fp)
-    lw   t0, 244(fp)
+    sw   t0, -432(fp)
+    addi t0, fp, -668
+    sw   t0, -428(fp)
+    lw   t0, -428(fp)
     lw   t0, 0(t0)
-    sw   t0, 248(fp)
-    lw   t0, 240(fp)
-    lw   t1, 248(fp)
+    sw   t0, -424(fp)
+    lw   t0, -432(fp)
+    lw   t1, -424(fp)
     add  t0, t0, t1
-    sw   t0, 252(fp)
-    lw   t0, 252(fp)
+    sw   t0, -420(fp)
+    lw   t0, -420(fp)
     neg  t0, t0
-    sw   t0, 256(fp)
-    addi t0, fp, 8
-    sw   t0, 260(fp)
-    lw   t0, 260(fp)
+    sw   t0, -416(fp)
+    addi t0, fp, -664
+    sw   t0, -412(fp)
+    lw   t0, -412(fp)
     lw   t0, 0(t0)
-    sw   t0, 264(fp)
-    lw   t0, 256(fp)
-    lw   t1, 264(fp)
+    sw   t0, -408(fp)
+    lw   t0, -416(fp)
+    lw   t1, -408(fp)
     mul  t0, t0, t1
-    sw   t0, 268(fp)
+    sw   t0, -404(fp)
     li   a0, 7
-    lw   a1, 268(fp)
+    lw   a1, -404(fp)
     call __fcc_func_show
-    sw   a0, 272(fp)
-    addi t0, fp, 0
-    sw   t0, 276(fp)
-    lw   t0, 276(fp)
+    sw   a0, -400(fp)
+    addi t0, fp, -672
+    sw   t0, -396(fp)
+    lw   t0, -396(fp)
     lw   t0, 0(t0)
-    sw   t0, 280(fp)
-    lw   t0, 280(fp)
+    sw   t0, -392(fp)
+    lw   t0, -392(fp)
     neg  t0, t0
-    sw   t0, 284(fp)
-    addi t0, fp, 4
-    sw   t0, 288(fp)
-    lw   t0, 288(fp)
+    sw   t0, -388(fp)
+    addi t0, fp, -668
+    sw   t0, -384(fp)
+    lw   t0, -384(fp)
     lw   t0, 0(t0)
-    sw   t0, 292(fp)
-    lw   t0, 284(fp)
-    lw   t1, 292(fp)
+    sw   t0, -380(fp)
+    lw   t0, -388(fp)
+    lw   t1, -380(fp)
     add  t0, t0, t1
-    sw   t0, 296(fp)
-    addi t0, fp, 8
-    sw   t0, 300(fp)
-    lw   t0, 300(fp)
+    sw   t0, -376(fp)
+    addi t0, fp, -664
+    sw   t0, -372(fp)
+    lw   t0, -372(fp)
     lw   t0, 0(t0)
-    sw   t0, 304(fp)
-    lw   t0, 304(fp)
+    sw   t0, -368(fp)
+    lw   t0, -368(fp)
     li   t1, 2
     add  t0, t0, t1
-    sw   t0, 308(fp)
-    lw   t0, 296(fp)
-    lw   t1, 308(fp)
+    sw   t0, -364(fp)
+    lw   t0, -376(fp)
+    lw   t1, -364(fp)
     mul  t0, t0, t1
-    sw   t0, 312(fp)
+    sw   t0, -360(fp)
     li   a0, 8
-    lw   a1, 312(fp)
+    lw   a1, -360(fp)
     call __fcc_func_show
-    sw   a0, 316(fp)
-    addi t0, fp, 0
-    sw   t0, 320(fp)
-    lw   t0, 320(fp)
+    sw   a0, -356(fp)
+    addi t0, fp, -672
+    sw   t0, -352(fp)
+    lw   t0, -352(fp)
     lw   t0, 0(t0)
-    sw   t0, 324(fp)
-    addi t0, fp, 4
-    sw   t0, 328(fp)
-    lw   t0, 328(fp)
+    sw   t0, -348(fp)
+    addi t0, fp, -668
+    sw   t0, -344(fp)
+    lw   t0, -344(fp)
     lw   t0, 0(t0)
-    sw   t0, 332(fp)
-    lw   t0, 324(fp)
-    lw   t1, 332(fp)
+    sw   t0, -340(fp)
+    lw   t0, -348(fp)
+    lw   t1, -340(fp)
     slt  t0, t0, t1
-    sw   t0, 336(fp)
-    lw   t0, 336(fp)
+    sw   t0, -336(fp)
+    lw   t0, -336(fp)
     beqz t0, _sc_right_6
     j    _sc_true_7
 _sc_true_7:
     li   t0, 1
-    sw   t0, 396(fp)
-    lw   t0, 396(fp)
-    sw   t0, 400(fp)
+    sw   t0, -276(fp)
+    lw   t0, -276(fp)
+    sw   t0, -272(fp)
     j    _sc_end_8
 _sc_right_6:
-    addi t0, fp, 4
-    sw   t0, 340(fp)
-    lw   t0, 340(fp)
+    addi t0, fp, -668
+    sw   t0, -332(fp)
+    lw   t0, -332(fp)
     lw   t0, 0(t0)
-    sw   t0, 344(fp)
-    addi t0, fp, 8
-    sw   t0, 348(fp)
-    lw   t0, 348(fp)
+    sw   t0, -328(fp)
+    addi t0, fp, -664
+    sw   t0, -324(fp)
+    lw   t0, -324(fp)
     lw   t0, 0(t0)
-    sw   t0, 352(fp)
-    lw   t0, 344(fp)
-    lw   t1, 352(fp)
+    sw   t0, -320(fp)
+    lw   t0, -328(fp)
+    lw   t1, -320(fp)
     slt  t0, t0, t1
-    sw   t0, 356(fp)
-    lw   t0, 356(fp)
+    sw   t0, -316(fp)
+    lw   t0, -316(fp)
     beqz t0, _sc_false_10
     j    _sc_right_9
 _sc_end_8:
     li   a0, 9
-    lw   a1, 400(fp)
+    lw   a1, -272(fp)
     call __fcc_func_show_bool
-    sw   a0, 404(fp)
-    addi t0, fp, 0
-    sw   t0, 408(fp)
-    lw   t0, 408(fp)
+    sw   a0, -268(fp)
+    addi t0, fp, -672
+    sw   t0, -264(fp)
+    lw   t0, -264(fp)
     lw   t0, 0(t0)
-    sw   t0, 412(fp)
-    addi t0, fp, 4
-    sw   t0, 416(fp)
-    lw   t0, 416(fp)
+    sw   t0, -260(fp)
+    addi t0, fp, -668
+    sw   t0, -256(fp)
+    lw   t0, -256(fp)
     lw   t0, 0(t0)
-    sw   t0, 420(fp)
-    lw   t0, 412(fp)
-    lw   t1, 420(fp)
+    sw   t0, -252(fp)
+    lw   t0, -260(fp)
+    lw   t1, -252(fp)
     sub  t0, t0, t1
     seqz t0, t0
-    sw   t0, 424(fp)
-    lw   t0, 424(fp)
+    sw   t0, -248(fp)
+    lw   t0, -248(fp)
     seqz t0, t0
-    sw   t0, 428(fp)
-    lw   t0, 428(fp)
+    sw   t0, -244(fp)
+    lw   t0, -244(fp)
     beqz t0, _sc_false_13
     j    _sc_right_12
 _sc_right_9:
-    addi t0, fp, 8
-    sw   t0, 360(fp)
-    lw   t0, 360(fp)
+    addi t0, fp, -664
+    sw   t0, -312(fp)
+    lw   t0, -312(fp)
     lw   t0, 0(t0)
-    sw   t0, 364(fp)
-    addi t0, fp, 0
-    sw   t0, 368(fp)
-    lw   t0, 368(fp)
+    sw   t0, -308(fp)
+    addi t0, fp, -672
+    sw   t0, -304(fp)
+    lw   t0, -304(fp)
     lw   t0, 0(t0)
-    sw   t0, 372(fp)
-    lw   t0, 364(fp)
-    lw   t1, 372(fp)
+    sw   t0, -300(fp)
+    lw   t0, -308(fp)
+    lw   t1, -300(fp)
     slt  t0, t0, t1
-    sw   t0, 376(fp)
-    lw   t0, 376(fp)
-    sw   t0, 380(fp)
-    lw   t0, 380(fp)
-    sw   t0, 388(fp)
+    sw   t0, -296(fp)
+    lw   t0, -296(fp)
+    sw   t0, -292(fp)
+    lw   t0, -292(fp)
+    sw   t0, -284(fp)
     j    _sc_end_11
 _sc_false_10:
     li   t0, 0
-    sw   t0, 384(fp)
-    lw   t0, 384(fp)
-    sw   t0, 388(fp)
+    sw   t0, -288(fp)
+    lw   t0, -288(fp)
+    sw   t0, -284(fp)
     j    _sc_end_11
 _sc_right_12:
-    addi t0, fp, 0
-    sw   t0, 432(fp)
-    lw   t0, 432(fp)
+    addi t0, fp, -672
+    sw   t0, -240(fp)
+    lw   t0, -240(fp)
     lw   t0, 0(t0)
-    sw   t0, 436(fp)
-    addi t0, fp, 8
-    sw   t0, 440(fp)
-    lw   t0, 440(fp)
+    sw   t0, -236(fp)
+    addi t0, fp, -664
+    sw   t0, -232(fp)
+    lw   t0, -232(fp)
     lw   t0, 0(t0)
-    sw   t0, 444(fp)
-    lw   t0, 436(fp)
-    lw   t1, 444(fp)
+    sw   t0, -228(fp)
+    lw   t0, -236(fp)
+    lw   t1, -228(fp)
     add  t0, t0, t1
-    sw   t0, 448(fp)
-    addi t0, fp, 4
-    sw   t0, 452(fp)
-    lw   t0, 452(fp)
+    sw   t0, -224(fp)
+    addi t0, fp, -668
+    sw   t0, -220(fp)
+    lw   t0, -220(fp)
     lw   t0, 0(t0)
-    sw   t0, 456(fp)
-    lw   t0, 448(fp)
-    lw   t1, 456(fp)
+    sw   t0, -216(fp)
+    lw   t0, -224(fp)
+    lw   t1, -216(fp)
     slt  t0, t1, t0
-    sw   t0, 460(fp)
-    lw   t0, 460(fp)
-    sw   t0, 464(fp)
-    lw   t0, 464(fp)
-    sw   t0, 472(fp)
+    sw   t0, -212(fp)
+    lw   t0, -212(fp)
+    sw   t0, -208(fp)
+    lw   t0, -208(fp)
+    sw   t0, -200(fp)
     j    _sc_end_14
 _sc_false_13:
     li   t0, 0
-    sw   t0, 468(fp)
-    lw   t0, 468(fp)
-    sw   t0, 472(fp)
+    sw   t0, -204(fp)
+    lw   t0, -204(fp)
+    sw   t0, -200(fp)
     j    _sc_end_14
 _sc_end_11:
-    lw   t0, 388(fp)
-    sw   t0, 392(fp)
-    lw   t0, 392(fp)
-    sw   t0, 400(fp)
+    lw   t0, -284(fp)
+    sw   t0, -280(fp)
+    lw   t0, -280(fp)
+    sw   t0, -272(fp)
     j    _sc_end_8
 _sc_end_14:
     li   a0, 10
-    lw   a1, 472(fp)
+    lw   a1, -200(fp)
     call __fcc_func_show_bool
-    sw   a0, 476(fp)
-    addi t0, fp, 0
-    sw   t0, 480(fp)
-    lw   t0, 480(fp)
+    sw   a0, -196(fp)
+    addi t0, fp, -672
+    sw   t0, -192(fp)
+    lw   t0, -192(fp)
     lw   t0, 0(t0)
-    sw   t0, 484(fp)
-    addi t0, fp, 4
-    sw   t0, 488(fp)
-    lw   t0, 488(fp)
+    sw   t0, -188(fp)
+    addi t0, fp, -668
+    sw   t0, -184(fp)
+    lw   t0, -184(fp)
     lw   t0, 0(t0)
-    sw   t0, 492(fp)
-    lw   t0, 484(fp)
-    lw   t1, 492(fp)
+    sw   t0, -180(fp)
+    lw   t0, -188(fp)
+    lw   t1, -180(fp)
     add  t0, t0, t1
-    sw   t0, 496(fp)
-    addi t0, fp, 8
-    sw   t0, 500(fp)
-    lw   t0, 500(fp)
+    sw   t0, -176(fp)
+    addi t0, fp, -664
+    sw   t0, -172(fp)
+    lw   t0, -172(fp)
     lw   t0, 0(t0)
-    sw   t0, 504(fp)
-    lw   t0, 496(fp)
-    lw   t1, 504(fp)
+    sw   t0, -168(fp)
+    lw   t0, -176(fp)
+    lw   t1, -168(fp)
     slt  t0, t0, t1
-    sw   t0, 508(fp)
-    lw   t0, 508(fp)
+    sw   t0, -164(fp)
+    lw   t0, -164(fp)
     seqz t0, t0
-    sw   t0, 512(fp)
+    sw   t0, -160(fp)
     li   a0, 11
-    lw   a1, 512(fp)
+    lw   a1, -160(fp)
     call __fcc_func_show_bool
-    sw   a0, 516(fp)
-    addi t0, fp, 0
-    sw   t0, 520(fp)
-    lw   t0, 520(fp)
+    sw   a0, -156(fp)
+    addi t0, fp, -672
+    sw   t0, -152(fp)
+    lw   t0, -152(fp)
     lw   t0, 0(t0)
-    sw   t0, 524(fp)
-    addi t0, fp, 4
-    sw   t0, 528(fp)
-    lw   t0, 528(fp)
+    sw   t0, -148(fp)
+    addi t0, fp, -668
+    sw   t0, -144(fp)
+    lw   t0, -144(fp)
     lw   t0, 0(t0)
-    sw   t0, 532(fp)
-    lw   t0, 524(fp)
-    lw   t1, 532(fp)
+    sw   t0, -140(fp)
+    lw   t0, -148(fp)
+    lw   t1, -140(fp)
     add  t0, t0, t1
-    sw   t0, 536(fp)
-    addi t0, fp, 0
-    sw   t0, 540(fp)
-    lw   t0, 540(fp)
+    sw   t0, -136(fp)
+    addi t0, fp, -672
+    sw   t0, -132(fp)
+    lw   t0, -132(fp)
     lw   t0, 0(t0)
-    sw   t0, 544(fp)
-    addi t0, fp, 4
-    sw   t0, 548(fp)
-    lw   t0, 548(fp)
+    sw   t0, -128(fp)
+    addi t0, fp, -668
+    sw   t0, -124(fp)
+    lw   t0, -124(fp)
     lw   t0, 0(t0)
-    sw   t0, 552(fp)
-    lw   t0, 544(fp)
-    lw   t1, 552(fp)
+    sw   t0, -120(fp)
+    lw   t0, -128(fp)
+    lw   t1, -120(fp)
     sub  t0, t0, t1
-    sw   t0, 556(fp)
-    lw   t0, 536(fp)
-    lw   t1, 556(fp)
+    sw   t0, -116(fp)
+    lw   t0, -136(fp)
+    lw   t1, -116(fp)
     mul  t0, t0, t1
-    sw   t0, 560(fp)
-    addi t0, fp, 8
-    sw   t0, 564(fp)
-    lw   t0, 564(fp)
+    sw   t0, -112(fp)
+    addi t0, fp, -664
+    sw   t0, -108(fp)
+    lw   t0, -108(fp)
     lw   t0, 0(t0)
-    sw   t0, 568(fp)
-    lw   t0, 568(fp)
+    sw   t0, -104(fp)
+    lw   t0, -104(fp)
     li   t1, 1
     add  t0, t0, t1
-    sw   t0, 572(fp)
-    lw   t0, 560(fp)
-    lw   t1, 572(fp)
+    sw   t0, -100(fp)
+    lw   t0, -112(fp)
+    lw   t1, -100(fp)
     div  t0, t0, t1
-    sw   t0, 576(fp)
+    sw   t0, -96(fp)
     li   a0, 12
-    lw   a1, 576(fp)
+    lw   a1, -96(fp)
     call __fcc_func_show
-    sw   a0, 580(fp)
-    addi t0, fp, 0
-    sw   t0, 584(fp)
-    lw   t0, 584(fp)
+    sw   a0, -92(fp)
+    addi t0, fp, -672
+    sw   t0, -88(fp)
+    lw   t0, -88(fp)
     lw   t0, 0(t0)
-    sw   t0, 588(fp)
-    addi t0, fp, 4
-    sw   t0, 592(fp)
-    lw   t0, 592(fp)
+    sw   t0, -84(fp)
+    addi t0, fp, -668
+    sw   t0, -80(fp)
+    lw   t0, -80(fp)
     lw   t0, 0(t0)
-    sw   t0, 596(fp)
-    addi t0, fp, 8
-    sw   t0, 600(fp)
-    lw   t0, 600(fp)
+    sw   t0, -76(fp)
+    addi t0, fp, -664
+    sw   t0, -72(fp)
+    lw   t0, -72(fp)
     lw   t0, 0(t0)
-    sw   t0, 604(fp)
-    lw   t0, 596(fp)
-    lw   t1, 604(fp)
+    sw   t0, -68(fp)
+    lw   t0, -76(fp)
+    lw   t1, -68(fp)
     sub  t0, t0, t1
-    sw   t0, 608(fp)
-    lw   t0, 588(fp)
-    lw   t1, 608(fp)
+    sw   t0, -64(fp)
+    lw   t0, -84(fp)
+    lw   t1, -64(fp)
     div  t0, t0, t1
-    sw   t0, 612(fp)
-    addi t0, fp, 0
-    sw   t0, 616(fp)
-    lw   t0, 616(fp)
+    sw   t0, -60(fp)
+    addi t0, fp, -672
+    sw   t0, -56(fp)
+    lw   t0, -56(fp)
     lw   t0, 0(t0)
-    sw   t0, 620(fp)
-    addi t0, fp, 4
-    sw   t0, 624(fp)
-    lw   t0, 624(fp)
+    sw   t0, -52(fp)
+    addi t0, fp, -668
+    sw   t0, -48(fp)
+    lw   t0, -48(fp)
     lw   t0, 0(t0)
-    sw   t0, 628(fp)
-    addi t0, fp, 8
-    sw   t0, 632(fp)
-    lw   t0, 632(fp)
+    sw   t0, -44(fp)
+    addi t0, fp, -664
+    sw   t0, -40(fp)
+    lw   t0, -40(fp)
     lw   t0, 0(t0)
-    sw   t0, 636(fp)
-    lw   t0, 628(fp)
-    lw   t1, 636(fp)
+    sw   t0, -36(fp)
+    lw   t0, -44(fp)
+    lw   t1, -36(fp)
     add  t0, t0, t1
-    sw   t0, 640(fp)
-    lw   t0, 620(fp)
-    lw   t1, 640(fp)
+    sw   t0, -32(fp)
+    lw   t0, -52(fp)
+    lw   t1, -32(fp)
     rem  t0, t0, t1
-    sw   t0, 644(fp)
-    lw   t0, 612(fp)
-    lw   t1, 644(fp)
+    sw   t0, -28(fp)
+    lw   t0, -60(fp)
+    lw   t1, -28(fp)
     add  t0, t0, t1
-    sw   t0, 648(fp)
+    sw   t0, -24(fp)
     li   a0, 13
-    lw   a1, 648(fp)
+    lw   a1, -24(fp)
     call __fcc_func_show
-    sw   a0, 652(fp)
+    sw   a0, -20(fp)
     li   a0, 0
-    lw   ra, 668(sp)
-    lw   fp, 664(sp)
+    lw   ra, -4(fp)
+    lw   fp, -8(fp)
     addi sp, sp, 672
     ret
 

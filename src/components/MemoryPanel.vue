@@ -56,25 +56,25 @@ const memorySegments = computed(() => {
   const stackStart = (stackEnd - STACK_WINDOW_SIZE) >>> 0
   const definitions = [
     {
-      id: 'text', label: '代码', color: '#a998f7',
+      id: 'text', label: '代码', color: '#6c71c4',
       start: config.textBase,
       end: config.textBase + Math.max(program.instructions.length * 4, 4),
       used: Math.max(program.instructions.length * 4, 4),
     },
     {
-      id: 'data', label: '数据', color: '#70c5dc',
+      id: 'data', label: '数据', color: '#2aa198',
       start: program.dataStart,
       end: Math.max(program.dataEnd, program.dataStart + PAGE_SIZE),
       used: Math.max(0, program.dataEnd - program.dataStart),
     },
     {
-      id: 'heap', label: '堆', color: '#e5c07b',
+      id: 'heap', label: '堆', color: '#b58900',
       start: program.heapStart,
       end: Math.max(simulator.heapPointer, program.heapStart + PAGE_SIZE),
       used: Math.max(0, simulator.heapPointer - program.heapStart),
     },
     {
-      id: 'stack', label: '栈', color: '#70e1ba',
+      id: 'stack', label: '栈', color: '#859900',
       start: stackStart,
       end: stackEnd,
       used: Math.min(STACK_WINDOW_SIZE, Math.max(0, stackEnd - pointers.value.sp)),
