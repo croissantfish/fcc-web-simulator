@@ -131,3 +131,13 @@ npm run build
 ```
 
 执行引擎已使用 `../fcc/tests/ref_asm/` 中全部 7 个 MIPS32 和 7 个 RISC-V32 程序，与 `../fcc/tests/data/` 的输入及期望输出逐一比对通过；同时验证了 FCC 原始 RISC-V `start.s/io.s`、六个统一 I/O 函数、断点继续、浏览器内编辑和重置重跑。
+
+## 许可证 / License
+
+本项目采用自定义的 [FCC ASM Lab 公立教育科研机构非商业许可证 1.0.0](LICENSE)，属于源代码可用的非商业许可软件，并非 OSI 定义下的开源软件。各国家和地区依法设立、由公共财政全额或部分资助的公立大学、中学、小学和公立科研机构，可在许可范围内免费使用本项目，并根据自身教学、实验或科研需要开发及分发非商业修改版本；中国境内财政全额拨款或差额拨款的公立院校，以及中国科学院信息工程研究所、计算技术研究所等符合条件的公立科研机构均包含在内。分发时须保留版权及许可声明、提供许可证全文并标明修改。
+
+私立院校（包括非营利性私立院校）、商业培训机构、企业及其他不符合条件的主体不适用本许可证；相关使用或商业合作须另行取得书面许可。具体规则请参阅[教育科研使用说明](EDUCATIONAL_USE.md)。
+
+This project uses the custom [FCC ASM Lab Public-Education-Research Noncommercial License 1.0.0](LICENSE). It is source-available, not OSI-approved open source. Public universities, secondary schools, primary schools, and public research institutions that are lawfully established and wholly or partly publicly funded may use it royalty-free and develop and distribute noncommercial modified versions for teaching, laboratory, or research purposes, subject to the license. Private schools, commercial training providers, businesses, privately operated research institutions, and other ineligible persons require separate written permission.
+
+许可证以中文文本为准，英文仅为翻译件；如有出入，以中文版本为准。商业及其他授权 / Commercial and other licensing：[croissantfish](https://github.com/croissantfish)。第三方依赖及外部材料仍适用其原有许可证，详见[第三方许可声明](THIRD_PARTY_NOTICES.md)。

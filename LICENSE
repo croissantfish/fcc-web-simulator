@@ -1,0 +1,143 @@
+Required Notice: Copyright 2026 Songyu Ke (https://github.com/croissantfish)
+
+# FCC ASM Lab 公立教育科研机构非商业许可证 1.0.0
+
+# FCC ASM Lab Public-Education-Research Noncommercial License 1.0.0
+
+本许可证是针对本项目制定的独立许可条款，不是 PolyForm 许可证，也不是开放源代码促进会（OSI）定义的开源许可证。
+
+This is a custom license for this project. It is not a PolyForm license or an open-source license as defined by the Open Source Initiative (OSI).
+
+## 一、定义
+
+1. **许可方**：Songyu Ke（https://github.com/croissantfish），或依法承继本项目相关权利的主体。
+2. **本软件**：许可方依据本许可证提供的 FCC ASM Lab 原创源代码、目标代码、文档及其修改版本，但不包括另有许可条款的第三方材料。
+3. **公立教育科研机构**：在任何国家或地区依法设立，并由公共财政全额或部分资助的公立大学、中学、小学或公立科研机构。在中华人民共和国境内，包括由财政全额拨款或差额拨款的公立高等学校、中学和小学，以及符合条件的公立科研机构，例如中国科学院信息工程研究所、中国科学院计算技术研究所。仅接受政府补贴、税收优惠或其他公共支持，但依法属于私立院校的主体，不属于本许可证所称公立教育科研机构；企业所属研究机构、商业培训机构所属研究机构及其他非公立研究机构亦不属于授权范围。
+4. **授权人员**：公立教育科研机构的教师、学生、研究人员及其他工作人员，但其仅可在该机构教学、课程作业、实验或科研活动中，代表该机构或在该机构管理下使用本软件。
+5. **修改版本**：基于本软件进行修改、改编或二次开发形成的版本。
+6. **非商业分发**：不以销售、出租、有偿许可、付费服务、广告收益、招生推广或其他商业利益为目的或条件的分发。公立院校依法收取普通学费，或者公立教育科研机构获得公共财政资助，本身不使其内部教学、课程作业、实验或科研活动构成商业使用。
+
+## 二、许可授予
+
+在持续遵守本许可证全部条款的前提下，许可方授予公立教育科研机构一项全球范围内的、非独占的、不可转让的、不可再许可的、免许可费的著作权许可，以供该机构及其授权人员：
+
+1. 复制、安装、运行和展示本软件；
+2. 根据该机构教学、课程作业、实验或科研需要修改本软件并开发修改版本；
+3. 以源代码、目标代码或浏览器可运行形式，复制和分发本软件及非商业修改版本；
+4. 在课堂、课程平台、实验环境及机构内部科研活动中使用本软件及修改版本。
+
+除上述明确授予的权利外，其他主体或其他用途均不因获取、访问或下载本软件而获得许可。
+
+## 三、分发条件
+
+分发本软件或修改版本时，分发方必须：
+
+1. 随分发内容提供本许可证全文；
+2. 完整保留所有以 `Required Notice:` 开头的声明，以及本软件中原有的著作权和许可声明；
+3. 对修改版本以合理方式标明已作出修改，不得将修改版本冒充为许可方发布的原版；
+4. 不得删除或改变第三方材料中的权利声明；
+5. 不得将本许可证表述为向私立院校、商业培训机构、企业或其他不符合条件的主体授予使用权。
+
+公开分发不等于向不符合本许可证主体条件的使用者授予许可。接收方仍须独立满足本许可证的适用条件，或另行取得许可方的书面许可。
+
+## 四、不适用主体与受限用途
+
+1. 私立院校（包括登记为非营利形式的私立院校）、商业培训机构、企业及其他不属于公立教育科研机构的主体，不适用本许可证。未经许可以外的法定权利或许可方另行书面许可，不得使用、复制、修改或分发本软件。
+2. 公立教育科研机构不得利用本软件或修改版本从事下列活动：
+   - 销售、出租、有偿许可本软件或修改版本；
+   - 面向第三方提供以本软件或修改版本为基础的收费培训、付费实验平台或其他商业服务；
+   - 将本软件或修改版本用于商业招生宣传、广告推广或商业产品展示；
+   - 将本许可证项下权利转让、再许可或以其他方式扩展给不符合条件的第三方。
+3. 公立教育科研机构与私立院校、商业培训机构或企业合作，不使合作方自动取得本许可证项下的任何权利。合作方须另行取得许可方的书面许可。
+
+## 五、第三方材料与名称
+
+1. 第三方依赖、图标、字体、汇编样例、数据及其他外部材料仍适用其原有许可条款。本许可证不改变这些材料的权利归属或许可条件。
+2. 本许可证不授予使用许可方姓名、项目名称或标识的商标权或其他标识性权益。未经许可以外的法定权利或另行授权，不得以可能造成来源、关联或认可误认的方式使用相关名称或标识。
+
+## 六、许可终止与纠正
+
+1. 使用方违反本许可证的，本许可证授予该使用方的权利自动终止。
+2. 使用方在首次收到许可方书面违约通知后三十（30）日内完全纠正违约并采取合理措施补救既往违规的，许可方可书面同意恢复其许可；未经许可方书面同意，许可不自动恢复。
+3. 许可终止不影响许可方依法追究责任，也不影响第三方材料原有许可条款的适用。
+
+## 七、无保证与责任限制
+
+在适用法律允许的范围内，本软件按“现状”提供，不附带任何明示或默示的保证，包括但不限于适销性、特定用途适用性及不侵权保证。对于因本许可证、本软件或其使用产生的任何间接、附带、特殊、惩罚性或后果性损害，许可方不承担责任。适用法律不允许排除或限制的责任不受本条影响。
+
+## 八、其他
+
+1. 本许可证不影响使用方依据适用法律享有的、无需许可即可行使的法定权利。
+2. 许可方可向任何主体另行授予不同条件的许可。另行许可不改变本许可证已明确授予且尚在有效期内的权利。
+3. 未经许可方另行书面许可，本许可证未明确授予的权利均由许可方保留。
+4. 本许可证任何条款被认定为无效或不可执行的，不影响其他条款的效力。
+5. 本许可证以中文文本为准。英文译文仅为阅读便利而提供；中英文不一致时，以中文文本为准。
+
+---
+
+# English Reference Translation
+
+## 1. Definitions
+
+1. **Licensor** means Songyu Ke (https://github.com/croissantfish), or a person or entity that lawfully succeeds to the relevant rights in this project.
+2. **Software** means the original source code, object code, documentation, and modified versions of FCC ASM Lab made available by the Licensor under this license, excluding third-party materials governed by separate terms.
+3. **Public Institution** means a public university, secondary school, primary school, or public research institution lawfully established in any country or region and wholly or partly funded by public finances. In the People's Republic of China, this includes public institutions of higher education, secondary schools, and primary schools receiving full or partial fiscal appropriations, as well as eligible public research institutions such as the Institute of Information Engineering and the Institute of Computing Technology of the Chinese Academy of Sciences. A private school does not qualify merely because it receives government subsidies, tax benefits, or other public support. Research institutions affiliated with businesses or commercial training providers, and other privately operated research institutions, are not eligible.
+4. **Authorized Personnel** means teachers, students, researchers, and other staff of a Public Institution acting on its behalf or under its administration solely for its teaching, coursework, laboratory, or research activities.
+5. **Modified Version** means a version created by modifying, adapting, or developing derivative works based on the Software.
+6. **Noncommercial Distribution** means distribution not intended or conditioned on sales, rental, paid licensing, paid services, advertising revenue, student recruitment promotion, or other commercial benefit. Lawful ordinary tuition at a public school or public funding of a Public Institution does not, by itself, make its internal teaching, coursework, laboratory, or research activities commercial.
+
+## 2. License Grant
+
+Subject to continuing compliance with this license, the Licensor grants each Public Institution a worldwide, non-exclusive, non-transferable, non-sublicensable, royalty-free copyright license for the institution and its Authorized Personnel to:
+
+1. copy, install, run, and display the Software;
+2. modify the Software and develop Modified Versions for its teaching, coursework, laboratory, or research needs;
+3. copy and distribute the Software and noncommercial Modified Versions in source, object, or browser-runnable form; and
+4. use the Software and Modified Versions in classrooms, course platforms, laboratory environments, and internal research activities.
+
+No other person or use is licensed merely by obtaining, accessing, or downloading the Software.
+
+## 3. Distribution Conditions
+
+Any distribution of the Software or a Modified Version must:
+
+1. include the complete text of this license;
+2. retain every line beginning with `Required Notice:` and all existing copyright and license notices in the Software;
+3. reasonably identify modifications and not misrepresent a Modified Version as an original release by the Licensor;
+4. preserve rights notices in third-party materials; and
+5. not represent this license as granting rights to private schools, commercial training providers, businesses, or other ineligible persons.
+
+Public distribution does not grant rights to persons who do not meet the eligibility requirements. Each recipient must independently qualify under this license or obtain separate written permission from the Licensor.
+
+## 4. Excluded Persons and Restricted Uses
+
+1. This license does not apply to private schools, including private schools organized as nonprofits, commercial training providers, businesses, or persons other than Public Institutions. Unless otherwise permitted by law or separately authorized in writing by the Licensor, they may not use, copy, modify, or distribute the Software.
+2. A Public Institution may not use the Software or a Modified Version to:
+   - sell, rent, or commercially license it;
+   - provide paid training, paid laboratory platforms, or other commercial services based on it to third parties;
+   - use it for commercial student recruitment, advertising, or commercial product demonstrations; or
+   - transfer, sublicense, or otherwise extend rights under this license to an ineligible third party.
+3. Collaboration between a Public Institution and a private school, commercial training provider, or business does not automatically grant the collaborator any rights. Separate written permission from the Licensor is required.
+
+## 5. Third-Party Materials and Names
+
+1. Third-party dependencies, icons, fonts, assembly examples, data, and other external materials remain governed by their original terms. This license does not change their ownership or licensing conditions.
+2. This license grants no trademark or similar rights in the Licensor's name, the project name, or associated logos. Except where permitted by law or separately authorized, they may not be used in a manner likely to cause confusion about origin, affiliation, or endorsement.
+
+## 6. Termination and Cure
+
+1. Rights granted to a user under this license terminate automatically upon that user's breach.
+2. After receiving an initial written notice of breach from the Licensor, the user may request reinstatement by fully curing the breach within thirty (30) days and taking reasonable steps to remedy past violations. Reinstatement requires the Licensor's written consent and is not automatic.
+3. Termination does not limit remedies available to the Licensor or affect the terms of third-party materials.
+
+## 7. Disclaimer and Limitation of Liability
+
+To the extent permitted by applicable law, the Software is provided “as is,” without express or implied warranties, including warranties of merchantability, fitness for a particular purpose, and non-infringement. The Licensor is not liable for indirect, incidental, special, punitive, or consequential damages arising from this license, the Software, or its use. Liability that cannot be excluded or limited under applicable law is unaffected.
+
+## 8. Miscellaneous
+
+1. This license does not limit statutory rights that may be exercised without permission under applicable law.
+2. The Licensor may grant separate licenses on different terms. A separate license does not alter valid and subsisting grants under this license.
+3. All rights not expressly granted are reserved by the Licensor unless separately authorized in writing.
+4. If any provision is held invalid or unenforceable, the remaining provisions remain effective.
+5. The Chinese text controls. This English translation is provided for convenience only.
