@@ -1,6 +1,6 @@
 <script setup>
-import { computed, nextTick, ref, watch } from 'vue'
-import { ChevronDown, FileCode2 } from '@lucide/vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { ChevronLeft, ChevronRight, FileCode2, Save, X } from '@lucide/vue'
 import { highlightAssembly } from '../highlight.js'
 
 const props = defineProps({
@@ -9,15 +9,21 @@ const props = defineProps({
   currentLine: { type: Number, default: 0 },
   errorLine: { type: Number, default: 0 },
   running: Boolean,
-  examples: { type: Array, default: () => [] },
-  selectedExample: { type: String, default: '' },
+  files: { type: Array, default: () => [] },
+  selectedFileId: { type: String, default: '' },
+  canStage: { type: Boolean, default: false },
 })
-const emit = defineEmits(['update:source', 'toggle-breakpoint', 'select-example'])
+const emit = defineEmits(['update:source', 'toggle-breakpoint', 'select-file', 'delete-file', 'stage'])
 const editor = ref(null)
 const gutter = ref(null)
 const highlight = ref(null)
+const tabs = ref(null)
+const tabsOverflowing = ref(false)
+const canScrollLeft = ref(false)
+const canScrollRight = ref(false)
 const lines = computed(() => props.source.split('\n'))
 const highlighted = computed(() => lines.value.map(highlightAssembly))
+let tabsObserver = null
 
 function syncScroll() {
   if (gutter.value) gutter.value.scrollTop = editor.value.scrollTop
@@ -25,6 +31,30 @@ function syncScroll() {
     highlight.value.scrollTop = editor.value.scrollTop
     highlight.value.scrollLeft = editor.value.scrollLeft
   }
+}
+
+function updateTabs() {
+  if (!tabs.value) return
+  tabsOverflowing.value = tabs.value.scrollWidth > tabs.value.clientWidth + 1
+  canScrollLeft.value = tabs.value.scrollLeft > 1
+  canScrollRight.value = tabs.value.scrollLeft + tabs.value.clientWidth < tabs.value.scrollWidth - 1
+}
+
+function scrollTabs(direction) {
+  tabs.value?.scrollBy({ left: direction * tabs.value.clientWidth * 0.7, behavior: 'smooth' })
+}
+
+async function revealSelectedTab() {
+  await nextTick()
+  if (!tabs.value) return
+  updateTabs()
+  if (!tabsOverflowing.value) return
+  const active = tabs.value.querySelector('.editor-tab.active')
+  if (!active) return
+  const tabsBox = tabs.value.getBoundingClientRect()
+  const activeBox = active.getBoundingClientRect()
+  const left = tabs.value.scrollLeft + activeBox.left - tabsBox.left - 28
+  tabs.value.scrollTo({ left: Math.max(0, left), behavior: 'smooth' })
 }
 
 function insertTab(event) {
@@ -49,23 +79,33 @@ watch(() => props.currentLine, async (line) => {
     syncScroll()
   }
 })
+watch(() => [props.files.length, props.selectedFileId], revealSelectedTab)
+
+onMounted(async () => {
+  tabsObserver = new ResizeObserver(updateTabs)
+  if (tabs.value) tabsObserver.observe(tabs.value)
+  await revealSelectedTab()
+})
+onBeforeUnmount(() => tabsObserver?.disconnect())
 </script>
 
 <template>
   <section class="panel editor-panel">
-    <header class="panel-header editor-header">
-      <div class="file-title">
-        <FileCode2 :size="16" />
-        <span>main.s</span>
-        <span class="unsaved-dot" title="当前文件" />
-      </div>
-      <label class="example-select">
-        <select :value="selectedExample" @change="emit('select-example', $event.target.value)">
-          <option v-for="example in examples" :key="example.id" :value="example.id">{{ example.name }}</option>
-        </select>
-        <ChevronDown :size="13" />
-      </label>
-    </header>
+    <div class="editor-tabs-wrap" :class="{ overflowing: tabsOverflowing }">
+      <button v-if="tabsOverflowing" class="editor-tabs-nav left" :disabled="!canScrollLeft" aria-label="向左滚动标签页" @click="scrollTabs(-1)"><ChevronLeft :size="14" /></button>
+      <header ref="tabs" class="editor-tabs" role="tablist" aria-label="已打开文件" @scroll="updateTabs">
+        <span v-if="!files.length" class="editor-tabs-empty">无已打开文件</span>
+        <div v-for="file in files" :key="file.id" class="editor-tab" :class="{ active: file.id === selectedFileId }">
+          <button class="editor-tab-select" role="tab" :aria-selected="file.id === selectedFileId" :title="file.name" @click="emit('select-file', file.id)">
+            <FileCode2 :size="13" />
+            <span>{{ file.name }}</span>
+            <span v-if="file.id === selectedFileId && canStage" class="unsaved-dot" title="有未暂存修改" />
+          </button>
+          <button class="editor-tab-close" :aria-label="`关闭 ${file.name}`" :title="`关闭 ${file.name}`" @click="emit('delete-file', file.id)"><X :size="12" /></button>
+        </div>
+      </header>
+      <button v-if="tabsOverflowing" class="editor-tabs-nav right" :disabled="!canScrollRight" aria-label="向右滚动标签页" @click="scrollTabs(1)"><ChevronRight :size="14" /></button>
+    </div>
     <div class="editor-workspace">
       <div ref="gutter" class="line-gutter" aria-label="行号，点击设置断点">
         <button
@@ -113,6 +153,7 @@ watch(() => props.currentLine, async (line) => {
       <span>汇编</span>
       <span>空格: 4</span>
       <span>UTF-8</span>
+      <button class="stage-button" :disabled="!canStage" title="仅暂存到浏览器，不会修改本地文件" @click="emit('stage')"><Save :size="11" />暂存</button>
       <span class="editor-hint">点击行号设置断点</span>
     </footer>
   </section>

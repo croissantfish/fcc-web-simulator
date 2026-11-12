@@ -14,10 +14,57 @@ import { Simulator } from './simulator/index.js'
 import { ARCHITECTURES } from './simulator/isa.js'
 import { hex } from './simulator/memory.js'
 
+const WORKSPACE_KEY = 'fcc-asm-workspaces-v1'
+let fileSequence = 0
+
+function createWorkspace(architecture) {
+  const example = EXAMPLES[architecture][0]
+  return {
+    files: [{ id: 'hello', name: 'HelloWorld.s', code: example.code, input: example.input }],
+    selectedId: 'hello',
+  }
+}
+
+function normalizeWorkspace(value, architecture) {
+  if (!value || !Array.isArray(value.files)) return createWorkspace(architecture)
+  const files = value.files.filter((file) => file && typeof file.id === 'string' && typeof file.name === 'string' && typeof file.code === 'string')
+    .map((file) => ({ id: file.id, name: file.name, code: file.code, input: typeof file.input === 'string' ? file.input : '' }))
+  const selectedId = files.some((file) => file.id === value.selectedId) ? value.selectedId : files[0]?.id || ''
+  return { files, selectedId }
+}
+
+function readWorkspaces() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(WORKSPACE_KEY) || 'null')
+    return {
+      mips: normalizeWorkspace(saved?.mips, 'mips'),
+      riscv: normalizeWorkspace(saved?.riscv, 'riscv'),
+    }
+  } catch {
+    return { mips: createWorkspace('mips'), riscv: createWorkspace('riscv') }
+  }
+}
+
+function uniqueFileName(files, name) {
+  const names = new Set(files.map((file) => file.name))
+  if (!names.has(name)) return name
+  const dot = name.lastIndexOf('.')
+  const stem = dot > 0 ? name.slice(0, dot) : name
+  const extension = dot > 0 ? name.slice(dot) : ''
+  let index = 2
+  while (names.has(`${stem} (${index})${extension}`)) index += 1
+  return `${stem} (${index})${extension}`
+}
+
+function createFileId() {
+  fileSequence += 1
+  return `file-${Date.now().toString(36)}-${fileSequence.toString(36)}`
+}
+
+const workspaces = ref({ mips: createWorkspace('mips'), riscv: createWorkspace('riscv') })
 const architecture = ref('mips')
-const selectedExample = ref('hello')
-const source = ref(EXAMPLES.mips[0].code)
-const input = ref(EXAMPLES.mips[0].input)
+const source = ref(workspaces.value.mips.files[0].code)
+const input = ref(workspaces.value.mips.files[0].input)
 const simulator = ref(new Simulator('mips'))
 const revision = ref(0)
 const status = ref('edited')
@@ -43,6 +90,11 @@ let executionId = 0
 
 const config = computed(() => ARCHITECTURES[architecture.value])
 const examples = computed(() => EXAMPLES[architecture.value])
+const workspace = computed(() => workspaces.value[architecture.value])
+const files = computed(() => workspace.value.files)
+const selectedFileId = computed(() => workspace.value.selectedId)
+const currentFile = computed(() => files.value.find((file) => file.id === selectedFileId.value))
+const canStage = computed(() => Boolean(currentFile.value && source.value !== currentFile.value.code))
 const currentInstruction = computed(() => {
   revision.value
   return simulator.value.program?.instructionMap.get(simulator.value.pc)
@@ -93,6 +145,7 @@ function loadProgram() {
 }
 
 function ensureProgram() {
+  if (canStage.value) stageCurrentFile()
   if (sourceDirty.value || !simulator.value.program || simulator.value.status === 'finished') return loadProgram()
   return true
 }
@@ -218,23 +271,85 @@ function onSourceChange(value) {
   status.value = 'edited'
   error.value = ''
   errorLine.value = 0
-  notice.value = '代码已修改，下次运行将重新汇编'
+  notice.value = '代码已修改，下次运行将自动暂存并重新汇编；也可点击暂存保存到浏览器'
 }
 
-function selectExample(id) {
-  const example = examples.value.find((item) => item.id === id)
-  if (!example) return
-  selectedExample.value = id
-  source.value = example.code
-  input.value = example.input
+function saveWorkspaces() {
+  try {
+    localStorage.setItem(WORKSPACE_KEY, JSON.stringify(workspaces.value))
+  } catch {
+    notice.value = '浏览器本地存储不可用或空间不足，无法保存文件列表'
+  }
+}
+
+function activateFile(id) {
+  const file = files.value.find((item) => item.id === id)
+  if (!file) return false
+  workspace.value.selectedId = id
+  source.value = file.code
+  input.value = file.input
   breakpoints.value = new Set()
   sourceDirty.value = true
   loadProgram()
+  saveWorkspaces()
+  return true
+}
+
+function selectFile(id) {
+  if (id === selectedFileId.value) return
+  if (activateFile(id)) notice.value = `已切换到 ${currentFile.value.name}`
 }
 
 function importExample(id) {
-  selectExample(id)
+  const example = examples.value.find((item) => item.id === id)
+  if (!example) return
+  const fileId = id === 'hello' ? 'hello' : `example-${id}`
+  let file = files.value.find((item) => item.id === fileId)
+  if (!file) {
+    file = {
+      id: fileId,
+      name: uniqueFileName(files.value, id === 'hello' ? 'HelloWorld.s' : `${example.name}.s`),
+      code: example.code,
+      input: example.input,
+    }
+    workspace.value.files.push(file)
+  }
   examplePickerOpen.value = false
+  activateFile(file.id)
+  notice.value = `已导入 ${file.name}`
+}
+
+function deleteFile(id) {
+  const index = workspace.value.files.findIndex((file) => file.id === id)
+  if (index < 0) return
+  const [removed] = workspace.value.files.splice(index, 1)
+  if (selectedFileId.value === id) {
+    const next = files.value[Math.min(index, files.value.length - 1)]
+    workspace.value.selectedId = next?.id || ''
+    source.value = next?.code || ''
+    input.value = next?.input || ''
+    breakpoints.value = new Set()
+    sourceDirty.value = true
+    if (next) {
+      loadProgram()
+    } else {
+      executionId += 1
+      running.value = false
+      simulator.value = new Simulator(architecture.value)
+      status.value = 'empty'
+      revision.value += 1
+    }
+  }
+  saveWorkspaces()
+  notice.value = `已关闭 ${removed.name}`
+}
+
+function stageCurrentFile() {
+  if (!canStage.value) return
+  currentFile.value.code = source.value
+  currentFile.value.input = input.value
+  saveWorkspaces()
+  notice.value = `已暂存 ${currentFile.value.name} 到浏览器，不会修改本地文件`
 }
 
 function changeArchitecture(id) {
@@ -243,12 +358,16 @@ function changeArchitecture(id) {
   running.value = false
   architecture.value = id
   simulator.value = new Simulator(id)
-  selectedExample.value = 'hello'
-  source.value = EXAMPLES[id][0].code
-  input.value = EXAMPLES[id][0].input
+  source.value = currentFile.value?.code || ''
+  input.value = currentFile.value?.input || ''
   breakpoints.value = new Set()
   sourceDirty.value = true
-  loadProgram()
+  if (currentFile.value) {
+    loadProgram()
+  } else {
+    status.value = 'empty'
+    revision.value += 1
+  }
 }
 
 function openFile() {
@@ -258,12 +377,21 @@ function openFile() {
 async function readFile(event) {
   const file = event.target.files?.[0]
   if (!file) return
-  source.value = await file.text()
-  selectedExample.value = ''
-  sourceDirty.value = true
-  notice.value = `已打开 ${file.name}`
-  loadProgram()
-  event.target.value = ''
+  try {
+    const opened = {
+      id: createFileId(),
+      name: uniqueFileName(files.value, file.name),
+      code: await file.text(),
+      input: '',
+    }
+    workspace.value.files.push(opened)
+    activateFile(opened.id)
+    notice.value = `已打开 ${opened.name}`
+  } catch (exception) {
+    recordError(exception)
+  } finally {
+    event.target.value = ''
+  }
 }
 
 function downloadFile() {
@@ -271,7 +399,7 @@ function downloadFile() {
   const url = URL.createObjectURL(blob)
   const link = document.createElement('a')
   link.href = url
-  link.download = architecture.value === 'mips' ? 'main-mips.s' : 'main-riscv.s'
+  link.download = currentFile.value?.name || (architecture.value === 'mips' ? 'main-mips.s' : 'main-riscv.s')
   link.click()
   URL.revokeObjectURL(url)
   notice.value = '汇编文件已导出'
@@ -329,7 +457,6 @@ watch(consoleView, (value) => {
   simulator.value.interactive = value === 'merged'
   if (simulator.value.steps === 0) simulator.value.setInput(value === 'merged' ? '' : input.value)
 })
-watch(source, (value) => localStorage.setItem(`fcc-asm-v2-${architecture.value}`, value))
 
 function applyTheme() {
   const theme = themeMode.value === 'system' ? (themeMedia?.matches ? 'dark' : 'light') : themeMode.value
@@ -358,15 +485,21 @@ function handleSystemThemeChange() {
 
 onMounted(() => {
   themeMedia = window.matchMedia('(prefers-color-scheme: dark)')
+  workspaces.value = readWorkspaces()
+  source.value = currentFile.value?.code || ''
+  input.value = currentFile.value?.input || ''
   try {
-    const saved = localStorage.getItem('fcc-asm-v2-mips')
     const savedTheme = localStorage.getItem('fcc-asm-theme')
-    if (saved) source.value = saved
     if (['system', 'light', 'dark'].includes(savedTheme)) themeMode.value = savedTheme
   } catch {}
   applyTheme()
   themeMedia.addEventListener('change', handleSystemThemeChange)
-  loadProgram()
+  if (currentFile.value) {
+    loadProgram()
+  } else {
+    status.value = 'empty'
+    revision.value += 1
+  }
   window.addEventListener('keydown', handleKeyboard)
 })
 onBeforeUnmount(() => {
@@ -444,11 +577,14 @@ onBeforeUnmount(() => {
         :current-line="currentLine"
         :error-line="errorLine"
         :running="running || status === 'waiting'"
-        :examples="examples"
-        :selected-example="selectedExample"
+        :files="files"
+        :selected-file-id="selectedFileId"
+        :can-stage="canStage"
         @update:source="onSourceChange"
         @toggle-breakpoint="toggleBreakpoint"
-        @select-example="selectExample"
+        @select-file="selectFile"
+        @delete-file="deleteFile"
+        @stage="stageCurrentFile"
       />
       <RegisterPanel v-model:radix="radix" :registers="registers" :current-line="currentLine" :architecture="architecture" @edit="editRegister" />
       <MemoryPanel :simulator="simulator" :revision="revision" />
@@ -487,7 +623,7 @@ onBeforeUnmount(() => {
           <button class="icon-button" aria-label="关闭样例选择" @click="examplePickerOpen = false"><X :size="18" /></button>
         </header>
         <div class="example-picker">
-          <p>选择 {{ config.name }} / {{ config.detail }} 汇编样例。导入后将替换当前代码，并载入样例的默认输入。</p>
+          <p>选择 {{ config.name }} / {{ config.detail }} 汇编样例。导入后将新建或切换到对应文件标签页，并载入样例的默认输入。</p>
           <div class="example-list">
             <button v-for="example in examples" :key="example.id" class="example-option" @click="importExample(example.id)">
               <FileCode2 :size="20" />
