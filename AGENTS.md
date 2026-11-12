@@ -6,7 +6,7 @@
 
 ## 技术栈与命令
 
-- Vue 3、Vite、JavaScript、`@lucide/vue`。
+- Vue 3、Vite、JavaScript、`@lucide/vue`、`marked`。
 - 包管理器使用 npm，依赖版本以 `package-lock.json` 为准。
 - 所有执行在浏览器本地完成，没有后端服务。
 
@@ -28,7 +28,8 @@ src/
 │   ├── EditorPanel.vue         # 源码编辑、语法显示、断点入口
 │   ├── RegisterPanel.vue       # 寄存器显示、编辑与进制切换
 │   ├── MemoryPanel.vue         # 堆栈、堆、数据段及地址定位
-│   └── ConsolePanel.vue        # 标准输入输出
+│   ├── ConsolePanel.vue        # 标准输入输出
+│   └── LicenseModal.vue        # 许可证 Markdown 渲染与弹窗
 ├── simulator/
 │   ├── index.js                # Simulator、指令语义、syscall/ecall
 │   ├── parser.js               # 段、标签、数据初始化与指令解析

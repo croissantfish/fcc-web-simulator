@@ -8,6 +8,7 @@ import EditorPanel from './components/EditorPanel.vue'
 import RegisterPanel from './components/RegisterPanel.vue'
 import MemoryPanel from './components/MemoryPanel.vue'
 import ConsolePanel from './components/ConsolePanel.vue'
+import LicenseModal from './components/LicenseModal.vue'
 import { EXAMPLES } from './examples.js'
 import { Simulator } from './simulator/index.js'
 import { ARCHITECTURES } from './simulator/isa.js'
@@ -30,6 +31,7 @@ const error = ref('')
 const errorLine = ref(0)
 const fileInput = ref(null)
 const helpOpen = ref(false)
+const licenseOpen = ref(false)
 const examplePickerOpen = ref(false)
 const notice = ref('编辑代码后点击运行，或按 F9 单步执行')
 const themeMode = ref('system')
@@ -57,7 +59,6 @@ const statusLabel = computed(() => ({
   edited: '代码已修改', ready: '就绪', running: '正在执行', paused: '已暂停', waiting: '等待输入',
   finished: '执行完成', error: '执行错误', empty: '未装载',
 }[status.value] || status.value))
-const activeExample = computed(() => examples.value.find((example) => example.id === selectedExample.value))
 
 function recordError(exception) {
   error.value = exception.message
@@ -467,10 +468,15 @@ onBeforeUnmount(() => {
     <footer class="status-bar">
       <div class="status-message"><span class="status-led" :class="status" />{{ notice }}</div>
       <div class="status-details">
-        <span v-if="activeExample">{{ activeExample.description }}</span>
         <span>{{ breakpoints.size }} 个断点</span>
         <span>{{ simulator.program?.instructions.length || 0 }} 条静态指令</span>
         <span>{{ config.detail }} · 32-bit LE</span>
+      </div>
+      <div class="status-actions">
+        <button class="status-license" aria-label="查看许可信息" title="查看许可信息" @click="licenseOpen = true">©</button>
+        <a class="status-github" href="https://github.com/croissantfish/fcc-web-simulator" target="_blank" rel="noopener noreferrer" aria-label="GitHub 仓库" title="GitHub 仓库">
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12" /></svg>
+        </a>
       </div>
     </footer>
 
@@ -513,8 +519,13 @@ onBeforeUnmount(() => {
           </div>
           <div class="syscall-note"><strong>系统调用</strong><p>SPIM：print/read integer、string、char、sbrk、exit。RISC-V：read (63)、write (64)、exit (93)、sbrk (214)。</p></div>
         </div>
-        <footer><span>面向 FCC 编译原理课程设计</span><button class="button primary" @click="helpOpen = false">开始调试</button></footer>
+        <footer>
+          <span>面向 FCC 编译原理课程设计</span>
+          <div class="help-footer-actions"><button class="button ghost" @click="licenseOpen = true">© 许可信息</button><button class="button primary" @click="helpOpen = false">开始调试</button></div>
+        </footer>
       </section>
     </div>
+
+    <LicenseModal :open="licenseOpen" @close="licenseOpen = false" />
   </div>
 </template>

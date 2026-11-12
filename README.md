@@ -113,7 +113,8 @@ src/
 │   ├── EditorPanel.vue         # 编辑器、行号与断点
 │   ├── RegisterPanel.vue       # 寄存器及进制转换
 │   ├── MemoryPanel.vue         # 堆栈、堆和数据段
-│   └── ConsolePanel.vue        # stdin / stdout
+│   ├── ConsolePanel.vue        # stdin / stdout
+│   └── LicenseModal.vue        # 许可证 Markdown 弹窗
 ├── simulator/
 │   ├── index.js                # 指令解释、系统调用与调试执行
 │   ├── parser.js               # 两阶段汇编解析和符号解析
