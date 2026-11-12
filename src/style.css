@@ -208,7 +208,19 @@ th { position: sticky; top: 0; z-index: 1; background: #111821; color: #586779; 
 .memory-address svg { margin-left: 5px; vertical-align: middle; color: var(--accent); }
 .memory-byte { color: #8292a5; text-align: center; }
 .memory-table td.memory-byte.dirty { color: var(--accent); background: rgba(112,225,186,0.08); }
-.memory-table td.memory-byte.pointer { color: var(--accent); box-shadow: inset 0 0 0 1px rgba(112,225,186,0.35); font-weight: 600; }
+.memory-table td.memory-byte.sp-pointer,
+.memory-table td.memory-byte.fp-pointer { position: relative; color: var(--accent); font-weight: 600; }
+.memory-table td.memory-byte.sp-pointer::before,
+.memory-table td.memory-byte.fp-pointer::before { content: ''; position: absolute; inset: 0; pointer-events: none; }
+.memory-table td.memory-byte.sp-pointer::before {
+  border-left: 1px solid var(--accent);
+  background: linear-gradient(var(--accent), var(--accent)) left top / 50% 1px no-repeat, linear-gradient(var(--accent), var(--accent)) left bottom / 50% 1px no-repeat;
+}
+.memory-table td.memory-byte.fp-pointer::before {
+  border-right: 1px solid var(--accent);
+  background: linear-gradient(var(--accent), var(--accent)) right top / 50% 1px no-repeat, linear-gradient(var(--accent), var(--accent)) right bottom / 50% 1px no-repeat;
+}
+.memory-table td.memory-byte.sp-pointer.fp-pointer::before { border: 1px solid var(--accent); background: none; }
 .memory-table td.memory-byte.stack-frame { color: var(--accent); background: rgba(112,225,186,0.12); }
 .memory-ascii { color: #8292a5; text-align: center; letter-spacing: 0.04em; }
 

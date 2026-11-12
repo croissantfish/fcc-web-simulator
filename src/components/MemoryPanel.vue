@@ -117,12 +117,18 @@ function hexByte(byte) {
   return byte.toString(16).padStart(2, '0')
 }
 
-function isPointer(address) {
-  return address === pointers.value.sp || address === pointers.value.fp
+function pointerClass(address) {
+  const sp = address === pointers.value.sp
+  const fp = pointers.value.fp > 0 && address === ((pointers.value.fp - 1) >>> 0)
+  if (sp && fp) return 'sp-pointer fp-pointer'
+  if (sp) return 'sp-pointer'
+  if (fp) return 'fp-pointer'
+  return null
 }
 
 function rowHasPointer(row) {
-  return [pointers.value.sp, pointers.value.fp].some((pointer) => pointer >= row.address && pointer < row.address + 16)
+  const fp = pointers.value.fp > 0 ? (pointers.value.fp - 1) >>> 0 : null
+  return [pointers.value.sp, fp].some((pointer) => pointer >= row.address && pointer < row.address + 16)
 }
 
 function inStackFrame(address) {
@@ -195,11 +201,13 @@ function rowInStackFrame(row) {
               v-for="(byte, offset) in row.bytes"
               :key="offset"
               class="memory-byte"
-              :class="{
-                dirty: row.dirty[offset],
-                pointer: isPointer((row.address + offset) >>> 0),
-                'stack-frame': inStackFrame((row.address + offset) >>> 0),
-              }"
+              :class="[
+                pointerClass((row.address + offset) >>> 0),
+                {
+                  dirty: row.dirty[offset],
+                  'stack-frame': inStackFrame((row.address + offset) >>> 0),
+                },
+              ]"
               :title="hex((row.address + offset) >>> 0)"
             >{{ hexByte(byte) }}</td>
             <td class="memory-ascii" :class="{ 'stack-frame-row': rowInStackFrame(row) }">{{ row.ascii }}</td>
